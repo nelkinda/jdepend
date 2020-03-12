@@ -40,7 +40,7 @@ public class ConstraintTest extends JDependTestCase {
         jdepend.addPackage(actualA);
         jdepend.addPackage(actualB);
 
-        assertEquals(true, jdepend.dependencyMatch(constraint));
+        assertTrue(jdepend.dependencyMatch(constraint));
     }
 
     public void testMatchFail() {
@@ -64,12 +64,13 @@ public class ConstraintTest extends JDependTestCase {
         jdepend.addPackage(actualB);
         jdepend.addPackage(actualC);
 
-        assertEquals(false, jdepend.dependencyMatch(constraint));
+        assertFalse(jdepend.dependencyMatch(constraint));
     }
 
     public void testJDependConstraints() throws IOException {
-        
-        jdepend.addDirectory(getBuildDir());
+
+        jdepend.addDirectory(getJavaMainDir());
+        jdepend.addDirectory(getJavaTestDir());
 
         jdepend.analyze();
 
@@ -100,6 +101,6 @@ public class ConstraintTest extends JDependTestCase {
         framework.dependsUpon(orgjunitrunners);
         framework.dependsUpon(orgjunit);
 
-        assertEquals(true, jdepend.dependencyMatch(constraint));
+        assertTrue(jdepend.dependencyMatch(constraint));
     }
 }

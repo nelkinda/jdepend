@@ -31,15 +31,16 @@ public class FileManagerTest extends JDependTestCase {
     }
 
     public void testBuildDirectory() throws IOException {
-        fileManager.addDirectory(getBuildDir());
-        assertEquals(43, fileManager.extractFiles().size());
+        fileManager.addDirectory(getJavaTestDir());
+        fileManager.addDirectory(getJavaMainDir());
+        assertEquals(44, fileManager.extractFiles().size());
     }
 
     public void testNonExistentDirectory() {
 
         try {
             
-            fileManager.addDirectory(getBuildDir() + "junk");
+            fileManager.addDirectory(getJavaTestDir() + "junk");
             fail("Non-existent directory: Should raise IOException");
         
         } catch (IOException expected) {
@@ -63,19 +64,19 @@ public class FileManagerTest extends JDependTestCase {
 
     public void testClassFile() throws IOException {
 
-        File f = new File(getBuildDir() + getPackageSubDir() + "JDepend.class");
+        File f = new File(getJavaMainDir() + getPackageSubDir() + "JDepend.class");
 
-        assertEquals(true, new FileManager().acceptClassFile(f));
+        assertTrue(new FileManager().acceptClassFile(f));
     }
 
     public void testNonExistentClassFile() {
-        File f = new File(getBuildDir() + "JDepend.class");
-        assertEquals(false, new FileManager().acceptClassFile(f));
+        File f = new File(getJavaMainDir() + "JDepend.class");
+        assertFalse(new FileManager().acceptClassFile(f));
     }
 
     public void testInvalidClassFile() {
-        File f = new File(getHomeDir() + "build.xml");
-        assertEquals(false, new FileManager().acceptClassFile(f));
+        File f = new File(getHomeDir() + "build.gradle");
+        assertFalse(new FileManager().acceptClassFile(f));
     }
 
     public void testJar() throws IOException {

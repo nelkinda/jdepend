@@ -31,10 +31,7 @@ public class ExampleTest extends TestCase {
 
     protected void setUp() throws IOException {
 
-        jdependHomeDirectory = System.getProperty("jdepend.home");
-        if (jdependHomeDirectory == null) {
-            fail("Property 'jdepend.home' not defined");
-        }
+        jdependHomeDirectory = "./";
 
         PackageFilter filter = new PackageFilter();
         filter.addPackage("java.*");
@@ -144,8 +141,7 @@ public class ExampleTest extends TestCase {
 
         jdepend.analyze();
 
-        assertEquals("Constraint mismatch", 
-                     true, jdepend.dependencyMatch(constraint));
+        assertTrue("Constraint mismatch", jdepend.dependencyMatch(constraint));
     }
 
     public static void main(String[] args) {

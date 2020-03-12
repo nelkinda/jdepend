@@ -44,9 +44,7 @@ public class ClassFileParserTest extends JDependTestCase {
     }
 
     public void testInterfaceClass() throws IOException {
-
-        File f = new File(getBuildDir() + getPackageSubDir() +
-                          "ExampleInterface.class");
+        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleInterface.class");
         
         JavaClass clazz = parser.parse(f);
 
@@ -68,9 +66,7 @@ public class ClassFileParserTest extends JDependTestCase {
     }
 
     public void testAbstractClass() throws IOException {
-
-        File f = new File(getBuildDir() + getPackageSubDir() +
-                          "ExampleAbstractClass.class");
+        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleAbstractClass.class");
         
         JavaClass clazz = parser.parse(f);
 
@@ -93,9 +89,7 @@ public class ClassFileParserTest extends JDependTestCase {
     }
 
     public void testConcreteClass() throws IOException {
-
-        File f = new File(getBuildDir() + getPackageSubDir() +
-                          "ExampleConcreteClass.class");
+        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleConcreteClass.class");
         
         JavaClass clazz = parser.parse(f);
 
@@ -132,9 +126,7 @@ public class ClassFileParserTest extends JDependTestCase {
     }
 
     public void testInnerClass() throws IOException {
-
-        File f = new File(getBuildDir() + getPackageSubDir() +
-                          "ExampleConcreteClass$ExampleInnerClass.class");
+        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleConcreteClass$ExampleInnerClass.class");
         
         JavaClass clazz = parser.parse(f);
 
@@ -153,9 +145,7 @@ public class ClassFileParserTest extends JDependTestCase {
     }
 
     public void testPackageClass() throws IOException {
-
-        File f = new File(getBuildDir() + getPackageSubDir() +
-                          "ExamplePackageClass.class");
+        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExamplePackageClass.class");
         
         JavaClass clazz = parser.parse(f);
 
@@ -174,11 +164,11 @@ public class ClassFileParserTest extends JDependTestCase {
     
     public void testExampleClassFileFromTimDrury() throws IOException {
         // see http://github.com/clarkware/jdepend/issues#issue/1
-        parser.parse(ClassFileParser.class.getResourceAsStream("/data/example_class1.bin"));
+        parser.parse(ClassFileParser.class.getClassLoader().getResourceAsStream("example_class1.bin"));
 	}
     
     public void testExampleClassFile2() throws IOException {
-        parser.parse(ClassFileParser.class.getResourceAsStream("/data/example_class2.bin"));
+        parser.parse(ClassFileParser.class.getClassLoader().getResourceAsStream("example_class2.bin"));
 	}
 }
 

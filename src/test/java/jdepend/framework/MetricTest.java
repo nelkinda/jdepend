@@ -38,13 +38,14 @@ public class MetricTest extends JDependTestCase {
     }
 
     public void testAnalyzeClassFiles() throws IOException {
-        jdepend.addDirectory(getBuildDir());
+        jdepend.addDirectory(getJavaTestDir());
+        jdepend.addDirectory(getJavaMainDir());
         assertAnalyzePackages();
     }
 
     private void assertAnalyzePackages() {
 
-        assertEquals(43, jdepend.countClasses());
+        assertEquals(44, jdepend.countClasses());
 
         PackageFilter filter = jdepend.getFilter();
         filter.addPackage("junit.*");
@@ -62,7 +63,7 @@ public class MetricTest extends JDependTestCase {
         JavaPackage p = jdepend.getPackage("jdepend.framework");
         assertNotNull(p);
 
-        assertEquals(25, p.getConcreteClassCount());
+        assertEquals(26, p.getConcreteClassCount());
         assertEquals(5, p.getAbstractClassCount());
         assertEquals(3, p.afferentCoupling());
         assertEquals(5, p.efferentCoupling());
@@ -119,7 +120,8 @@ public class MetricTest extends JDependTestCase {
 
     public void testConfiguredVolatility() throws IOException {
 
-        jdepend.addDirectory(getBuildDir());
+        jdepend.addDirectory(getJavaTestDir());
+        jdepend.addDirectory(getJavaMainDir());
 
         JavaPackage pkg = new JavaPackage("jdepend.swingui");
         pkg.setVolatility(0);

@@ -1,7 +1,5 @@
 package jdepend.framework;
 
-import java.io.*;
-
 import junit.framework.*;
 
 /**
@@ -14,7 +12,8 @@ public class JDependTestCase extends TestCase {
     private String homeDir;
     private String testDir;
     private String testDataDir;
-    private String buildDir;
+    private String javaMainDir;
+    private String javaTestDir;
     private String packageSubDir;
     private String originalUserHome;
 
@@ -24,17 +23,12 @@ public class JDependTestCase extends TestCase {
     }
 
     protected void setUp() {
-
-        homeDir = System.getProperty("jdepend.home");
-        if (homeDir == null) {
-            fail("Property 'jdepend.home' not defined");
-        }
-        homeDir = homeDir + File.separator;
-        testDir = homeDir + File.separator + "test" + File.separator;
-        testDataDir = testDir + "data" + File.separator;
-        buildDir = homeDir + "build" + File.separator;
-        packageSubDir = "jdepend" + File.separator + 
-                        "framework" + File.separator;
+        homeDir = "./";
+        testDir = "./src/test/";
+        testDataDir = "src/test/resources/";
+        javaTestDir = "build/classes/java/test/";
+        javaMainDir = "build/classes/java/main/";
+        packageSubDir = "jdepend/framework/";
         originalUserHome = System.getProperty("user.home");
     }
 
@@ -54,8 +48,12 @@ public class JDependTestCase extends TestCase {
         return testDir;
     }
 
-    public String getBuildDir() {
-        return buildDir;
+    public String getJavaTestDir() {
+        return javaTestDir;
+    }
+
+    public String getJavaMainDir() {
+        return javaMainDir;
     }
     
     public String getPackageSubDir() {
