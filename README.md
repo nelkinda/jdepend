@@ -14,6 +14,10 @@ Contributions are welcome.
 - [x] Fix compilation issues with JDK9 and newer
 - [x] Import project into Gradle
 - [ ] Get all unit tests to pass
+- [ ] Increase type safety (generics etc)
+- [ ] Remove dependencies on deprecated classes
+- [ ] Use Java Modules
+- [ ] Remove unnecessary dependencies on modules, for example, the tests should not depend on `java.desktop`
 - [ ] Increase unit test branch coverage to 100%
 - [ ] Add PiTest and increase unit test mutation coverage to 100%
 - [ ] Build API documentation with Gradle
