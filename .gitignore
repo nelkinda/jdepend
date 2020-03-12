@@ -1,0 +1,10 @@
+# Gradle
+build/
+.gradle/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Vim
+*.swp

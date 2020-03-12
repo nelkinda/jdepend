@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.nelkinda.tools'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '13'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.0'
+    testImplementation 'org.junit.platform:junit-platform-commons:1.6.0'
+    testImplementation 'org.junit.platform:junit-platform-engine:1.6.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.6.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+wrapper {
+    gradleVersion "6.2.2"
+    jarFile ".gradle/wrapper/gradle-wrapper.jar"
+}
