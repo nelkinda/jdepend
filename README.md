@@ -1,5 +1,7 @@
 # JDepend
 
+![Java CI with Gradle](https://github.com/nelkinda/jdepend/workflows/Java%20CI%20with%20Gradle/badge.svg)
+
 ## What Is It?
 
 JDepend traverses Java class and source file directories and generates design quality metrics for each Java package. JDepend allows you to automatically measure the quality of a design in terms of its extensibility, reusability, and maintainability to effectively manage and control package dependencies.
