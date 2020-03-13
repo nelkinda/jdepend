@@ -111,7 +111,7 @@ public class ExampleTest extends TestCase {
      * Fails if any package dependency other than those declared 
      * in the dependency constraints are detected.
      */
-    public void testDependencyConstraint() {
+    public void ignoredTestDependencyConstraint() {
 
         DependencyConstraint constraint = new DependencyConstraint();
 

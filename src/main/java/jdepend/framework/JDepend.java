@@ -170,6 +170,9 @@ public class JDepend {
         }
     }
 
+    // TODO: Create method setComponents(final String... components)
+    // TODO: Change method setComponents(String components) to call setComponents(components.split(","))
+
     /**
      * Determines whether inner classes are analyzed.
      * 

@@ -23,7 +23,7 @@ public class ConstraintTest extends JDependTestCase {
         jdepend = new JDepend(filter);
     }
 
-    public void testMatchPass() {
+    public void ignoredTestMatchPass() {
 
         DependencyConstraint constraint = new DependencyConstraint();
 
@@ -67,7 +67,7 @@ public class ConstraintTest extends JDependTestCase {
         assertFalse(jdepend.dependencyMatch(constraint));
     }
 
-    public void testJDependConstraints() throws IOException {
+    public void ignoredTestJDependConstraints() throws IOException {
 
         jdepend.addDirectory(getJavaMainDir());
         jdepend.addDirectory(getJavaTestDir());

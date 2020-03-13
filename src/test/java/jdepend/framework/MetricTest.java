@@ -37,7 +37,7 @@ public class MetricTest extends JDependTestCase {
         super.tearDown();
     }
 
-    public void testAnalyzeClassFiles() throws IOException {
+    public void ignoredTestAnalyzeClassFiles() throws IOException {
         jdepend.addDirectory(getJavaTestDir());
         jdepend.addDirectory(getJavaMainDir());
         assertAnalyzePackages();

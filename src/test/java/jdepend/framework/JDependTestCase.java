@@ -7,7 +7,7 @@ import junit.framework.*;
  * @author Clarkware Consulting, Inc.
  */
 
-public class JDependTestCase extends TestCase {
+public abstract class JDependTestCase extends TestCase {
 
     private String homeDir;
     private String testDir;
