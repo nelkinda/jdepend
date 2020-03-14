@@ -114,8 +114,7 @@ public abstract class PackageNode {
 
             children = new ArrayList();
             ArrayList packages = new ArrayList(getCoupledPackages());
-            Collections.sort(packages, new PackageComparator(PackageComparator
-                    .byName()));
+            Collections.sort(packages, JavaPackage.byName);
             Iterator i = packages.iterator();
             while (i.hasNext()) {
                 JavaPackage jPackage = (JavaPackage) i.next();

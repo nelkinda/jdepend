@@ -13,13 +13,12 @@ import java.util.*;
  */
 
 public class FileManager {
-
-    private ArrayList directories;
+    private final List<File> directories;
     private boolean acceptInnerClasses;
 
 
     public FileManager() {
-        directories = new ArrayList();
+        directories = new ArrayList<>();
         acceptInnerClasses = true;
     }
 
@@ -29,14 +28,12 @@ public class FileManager {
      * @param b <code>true</code> to collect inner classes; 
      *          <code>false</code> otherwise.
      */
-    public void acceptInnerClasses(boolean b) {
+    public void acceptInnerClasses(final boolean b) {
         acceptInnerClasses = b;
     }
 
-    public void addDirectory(String name) throws IOException {
-
-        File directory = new File(name);
-
+    public void addDirectory(final String name) throws IOException {
+        final File directory = new File(name);
         if (directory.isDirectory() || acceptJarFile(directory)) {
             directories.add(directory);
         } else {
@@ -44,91 +41,69 @@ public class FileManager {
         }
     }
 
-    public boolean acceptFile(File file) {
+    public boolean acceptFile(final File file) {
         return acceptClassFile(file) || acceptJarFile(file);
     }
 
-    public boolean acceptClassFile(File file) {
+    public boolean acceptClassFile(final File file) {
         if (!file.isFile()) {
             return false;
         }
         return acceptClassFileName(file.getName());
     }
 
-    public boolean acceptClassFileName(String name) {
-
-        if (!acceptInnerClasses) {
-            if (name.toLowerCase().indexOf("$") > 0) {
-                return false;
-            }
-        }
-
-        if (!name.toLowerCase().endsWith(".class")) {
-            return false;
-        }
-
-        return true;
+    public boolean acceptClassFileName(final String name) {
+        return (acceptInnerClasses || name.toLowerCase().indexOf('$') <= 0) && name.toLowerCase().endsWith(".class");
     }
 
-    public boolean acceptJarFile(File file) {
+    public boolean acceptJarFile(final File file) {
         return isJar(file) || isZip(file) || isWar(file);
     }
 
-    public Collection extractFiles() {
-
-        Collection files = new TreeSet();
-
-        for (Iterator i = directories.iterator(); i.hasNext();) {
-            File directory = (File)i.next();
+    public Collection<File> extractFiles() {
+        final Collection<File> files = new TreeSet<>();
+        for (final File directory : directories) {
             collectFiles(directory, files);
         }
-
         return files;
     }
 
-    private void collectFiles(File directory, Collection files) {
-
+    private void collectFiles(final File directory, final Collection<File> files) {
         if (directory.isFile()) {
-
             addFile(directory, files);
-
-        } else {
-
-            String[] directoryFiles = directory.list();
-
-            for (int i = 0; i < directoryFiles.length; i++) {
-
-                File file = new File(directory, directoryFiles[i]);
-                if (acceptFile(file)) {
-                    addFile(file, files);
-                } else if (file.isDirectory()) {
-                    collectFiles(file, files);
+        } else if (directory.isDirectory()) {
+            final String[] directoryFiles = directory.list();
+            assert directoryFiles != null;
+                for (final String directoryFile: directoryFiles) {
+                    final File file = new File(directory, directoryFile);
+                    if (acceptFile(file)) {
+                        addFile(file, files);
+                    } else if (file.isDirectory()) {
+                        collectFiles(file, files);
+                    }
                 }
-            }
         }
     }
 
-    private void addFile(File f, Collection files) {
+    private void addFile(final File f, final Collection<File> files) {
         if (!files.contains(f)) {
             files.add(f);
         }
     }
 
-    private boolean isWar(File file) {
+    private boolean isWar(final File file) {
         return existsWithExtension(file, ".war");
     }
 
-    private boolean isZip(File file) {
+    private boolean isZip(final File file) {
         return existsWithExtension(file, ".zip");
     }
  
-    private boolean isJar(File file) {
+    private boolean isJar(final File file) {
         return existsWithExtension(file, ".jar");
     }
 
-    private boolean existsWithExtension(File file, String extension) {
-        return file.isFile() &&
-            file.getName().toLowerCase().endsWith(extension);
+    private boolean existsWithExtension(final File file, final String extension) {
+        return file.isFile() && file.getName().toLowerCase().endsWith(extension);
     }
-
 }

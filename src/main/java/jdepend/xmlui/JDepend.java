@@ -103,7 +103,7 @@ public class JDepend extends jdepend.textui.JDepend {
         getWriter().println(
                 tab(4) + "<Class sourceFile=\"" + jClass.getSourceFile()
                         + "\">");
-        getWriter().println(tab(5) + jClass.getName());
+        getWriter().println(tab(5) + jClass.getClassName());
         getWriter().println(tab(4) + "</Class>");
     }
 

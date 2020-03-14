@@ -1,63 +1,67 @@
 package jdepend.framework;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.util.Comparator.comparing;
 
 /**
- * The <code>JavaClass</code> class represents a Java 
+ * The <code>JavaClass</code> class represents a Java
  * class or interface.
- * 
+ *
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
 
 public class JavaClass {
+    public static final Comparator<JavaClass> byName = comparing(JavaClass::getClassName);
 
+    private final Map<String, JavaPackage> importedPackages = new HashMap<>();
     private String className;
     private String packageName;
     private boolean isAbstract;
-    private HashMap imports;
     private String sourceFile;
 
-
-    public JavaClass(String name) {
-        className = name;
+    public JavaClass(final String className) {
+        this.className = className;
         packageName = "default";
         isAbstract = false;
-        imports = new HashMap();
         sourceFile = "Unknown";
     }
 
-    public void setName(String name) {
-        className = name;
-    }
-
-    public String getName() {
+    public String getClassName() {
         return className;
     }
 
-    public void setPackageName(String name) {
-        packageName = name;
+    public void setClassName(final String className) {
+        this.className = className;
     }
 
     public String getPackageName() {
         return packageName;
     }
 
-    public void setSourceFile(String name) {
-        sourceFile = name;
+    public void setPackageName(final String packageName) {
+        this.packageName = packageName;
     }
 
     public String getSourceFile() {
         return sourceFile;
     }
 
-    public Collection getImportedPackages() {
-        return imports.values();
+    public void setSourceFile(final String sourceFile) {
+        this.sourceFile = sourceFile;
     }
 
-    public void addImportedPackage(JavaPackage jPackage) {
-        if (!jPackage.getName().equals(getPackageName())) {
-            imports.put(jPackage.getName(), jPackage);
+    public Collection<JavaPackage> getImportedPackages() {
+        return importedPackages.values();
+    }
+
+    public void addImportedPackage(final JavaPackage importedPackage) {
+        if (!importedPackage.getName().equals(getPackageName())) {
+            importedPackages.put(importedPackage.getName(), importedPackage);
         }
     }
 
@@ -65,31 +69,20 @@ public class JavaClass {
         return isAbstract;
     }
 
-    public void isAbstract(boolean isAbstract) {
+    public void isAbstract(final boolean isAbstract) {
         this.isAbstract = isAbstract;
     }
 
-    public boolean equals(Object other) {
-
+    public boolean equals(final Object other) {
         if (other instanceof JavaClass) {
-            JavaClass otherClass = (JavaClass) other;
-            return otherClass.getName().equals(getName());
+            final JavaClass otherClass = (JavaClass) other;
+            return otherClass.getClassName().equals(getClassName());
         }
 
         return false;
     }
 
     public int hashCode() {
-        return getName().hashCode();
-    }
-
-    public static class ClassComparator implements Comparator {
-
-        public int compare(Object a, Object b) {
-            JavaClass c1 = (JavaClass) a;
-            JavaClass c2 = (JavaClass) b;
-
-            return c1.getName().compareTo(c2.getName());
-        }
+        return getClassName().hashCode();
     }
 }

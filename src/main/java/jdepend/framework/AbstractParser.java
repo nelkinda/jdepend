@@ -14,29 +14,26 @@ import java.util.*;
 
 public abstract class AbstractParser {
 
-    private ArrayList parseListeners;
+    private final List<ParserListener> parserListeners = new ArrayList<>();
     private PackageFilter filter;
-    public static boolean DEBUG = false;
-
 
     public AbstractParser() {
         this(new PackageFilter());
     }
 
-    public AbstractParser(PackageFilter filter) {
+    public AbstractParser(final PackageFilter filter) {
         setFilter(filter);
-        parseListeners = new ArrayList();
     }
 
-    public void addParseListener(ParserListener listener) {
-        parseListeners.add(listener);
+    public void addParseListener(final ParserListener listener) {
+        parserListeners.add(listener);
     }
 
     /**
      * Registered parser listeners are informed that the resulting
      * <code>JavaClass</code> was parsed.
      */
-    public abstract JavaClass parse(InputStream is) throws IOException;
+    public abstract JavaClass parse(final InputStream is) throws IOException;
 
     /**
      * Informs registered parser listeners that the specified
@@ -44,9 +41,9 @@ public abstract class AbstractParser {
      * 
      * @param jClass Parsed Java class.
      */
-    protected void onParsedJavaClass(JavaClass jClass) {
-        for (Iterator i = parseListeners.iterator(); i.hasNext();) {
-            ((ParserListener) i.next()).onParsedJavaClass(jClass);
+    protected void onParsedJavaClass(final JavaClass jClass) {
+        for (final ParserListener parserListener : parserListeners) {
+            parserListener.onParsedJavaClass(jClass);
         }
     }
 
@@ -57,13 +54,7 @@ public abstract class AbstractParser {
         return filter;
     }
 
-    protected void setFilter(PackageFilter filter) {
+    protected void setFilter(final PackageFilter filter) {
         this.filter = filter;
-    }
-
-    protected void debug(String message) {
-        if (DEBUG) {
-            System.err.println(message);
-        }
     }
 }

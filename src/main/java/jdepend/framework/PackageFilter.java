@@ -17,7 +17,7 @@ import java.util.*;
 
 public class PackageFilter {
 
-    private Collection filtered;
+    private final Collection<String> filtered;
 
     /**
      * Constructs a <code>PackageFilter</code> instance containing 
@@ -25,8 +25,8 @@ public class PackageFilter {
      * if it exists.
      */
     public PackageFilter() {
-        this(new ArrayList());
-        PropertyConfigurator config = new PropertyConfigurator();
+        this(new ArrayList<>());
+        final PropertyConfigurator config = new PropertyConfigurator();
         addPackages(config.getFilteredPackages());
     }
 
@@ -36,9 +36,9 @@ public class PackageFilter {
      * 
      * @param f Property file.
      */
-    public PackageFilter(File f) {
-        this(new ArrayList());
-        PropertyConfigurator config = new PropertyConfigurator(f);
+    public PackageFilter(final File f) {
+        this(new ArrayList<>());
+        final PropertyConfigurator config = new PropertyConfigurator(f);
         addPackages(config.getFilteredPackages());
     }
 
@@ -48,8 +48,8 @@ public class PackageFilter {
      * 
      * @param packageNames Package names to filter.
      */
-    public PackageFilter(Collection packageNames) {
-        filtered = new ArrayList();
+    public PackageFilter(Collection<String> packageNames) {
+        filtered = new ArrayList<>();
         addPackages(packageNames);
     }
 
@@ -58,7 +58,7 @@ public class PackageFilter {
      * 
      * @return Filtered package names.
      */
-    public Collection getFilters() {
+    public Collection<String> getFilters() {
         return filtered;
     }
 
@@ -69,21 +69,18 @@ public class PackageFilter {
      * @return <code>true</code> if the package name should be included;
      *         <code>false</code> otherwise.
      */
-    public boolean accept(String packageName) {
-        for (Iterator i = getFilters().iterator(); i.hasNext();) {
-            String nameToFilter = (String)i.next();
+    public boolean accept(final String packageName) {
+        for (final String nameToFilter : getFilters()) {
             if (packageName.startsWith(nameToFilter)) {
                 return false;
             }
         }
-
         return true;
     }
 
-    public void addPackages(Collection packageNames) {
-        for (Iterator i = packageNames.iterator(); i.hasNext();) {
-            addPackage((String)i.next());
-        }
+    public void addPackages(final Collection<String> packageNames) {
+        for (final String packageName : packageNames)
+            addPackage(packageName);
     }
 
     public void addPackage(String packageName) {

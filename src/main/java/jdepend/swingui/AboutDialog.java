@@ -18,7 +18,7 @@ class AboutDialog extends JDialog {
      * 
      * @param parent Parent frame.
      */
-    public AboutDialog(JFrame parent) {
+    public AboutDialog(final JFrame parent) {
         super(parent);
 
         setTitle("About");

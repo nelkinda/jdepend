@@ -6,7 +6,6 @@ import java.text.NumberFormat;
 
 import jdepend.framework.JavaClass;
 import jdepend.framework.JavaPackage;
-import jdepend.framework.PackageComparator;
 import jdepend.framework.PackageFilter;
 
 /**
@@ -109,8 +108,7 @@ public class JDepend {
 
         ArrayList packageList = new ArrayList(packages);
 
-        Collections.sort(packageList, new PackageComparator(PackageComparator
-                .byName()));
+        Collections.sort(packageList, JavaPackage.byName);
 
         printPackages(packageList);
 
@@ -169,7 +167,7 @@ public class JDepend {
         printAbstractClassesHeader();
 
         ArrayList members = new ArrayList(jPackage.getClasses());
-        Collections.sort(members, new JavaClass.ClassComparator());
+        Collections.sort(members, JavaClass.byName);
         Iterator memberIter = members.iterator();
         while (memberIter.hasNext()) {
             JavaClass jClass = (JavaClass) memberIter.next();
@@ -181,14 +179,12 @@ public class JDepend {
         printAbstractClassesFooter();
     }
 
-    protected void printConcreteClasses(JavaPackage jPackage) {
+    protected void printConcreteClasses(final JavaPackage jPackage) {
         printConcreteClassesHeader();
 
-        ArrayList members = new ArrayList(jPackage.getClasses());
-        Collections.sort(members, new JavaClass.ClassComparator());
-        Iterator memberIter = members.iterator();
-        while (memberIter.hasNext()) {
-            JavaClass concrete = (JavaClass) memberIter.next();
+        final List<JavaClass> members = new ArrayList<>(jPackage.getClasses());
+        members.sort(JavaClass.byName);
+        for (final JavaClass concrete : members) {
             if (!concrete.isAbstract()) {
                 printClassName(concrete);
             }
@@ -201,8 +197,7 @@ public class JDepend {
         printEfferentsHeader();
 
         ArrayList efferents = new ArrayList(jPackage.getEfferents());
-        Collections.sort(efferents, new PackageComparator(PackageComparator
-                .byName()));
+        Collections.sort(efferents, JavaPackage.byName);
         Iterator efferentIter = efferents.iterator();
         while (efferentIter.hasNext()) {
             JavaPackage efferent = (JavaPackage) efferentIter.next();
@@ -218,9 +213,8 @@ public class JDepend {
     protected void printAfferents(JavaPackage jPackage) {
         printAfferentsHeader();
 
-        ArrayList afferents = new ArrayList(jPackage.getAfferents());
-        Collections.sort(afferents, new PackageComparator(PackageComparator
-                .byName()));
+        final List<JavaPackage> afferents = new ArrayList<>(jPackage.getAfferents());
+        afferents.sort(JavaPackage.byName);
         Iterator afferentIter = afferents.iterator();
         while (afferentIter.hasNext()) {
             JavaPackage afferent = (JavaPackage) afferentIter.next();
@@ -335,7 +329,7 @@ public class JDepend {
     }
 
     protected void printClassName(JavaClass jClass) {
-        getWriter().println(tab() + jClass.getName());
+        getWriter().println(tab() + jClass.getClassName());
     }
 
     protected void printPackageName(JavaPackage jPackage) {

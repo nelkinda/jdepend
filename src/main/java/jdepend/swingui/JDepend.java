@@ -11,7 +11,6 @@ import javax.swing.tree.*;
 
 import jdepend.framework.JavaClass;
 import jdepend.framework.JavaPackage;
-import jdepend.framework.PackageComparator;
 import jdepend.framework.PackageFilter;
 import jdepend.framework.ParserListener;
 
@@ -120,8 +119,7 @@ public class JDepend implements ParserListener {
 
         ArrayList packages = new ArrayList(analyzer.analyze());
 
-        Collections.sort(packages, new PackageComparator(PackageComparator
-                .byName()));
+        Collections.sort(packages, JavaPackage.byName);
 
         stopProgressMonitor();
 

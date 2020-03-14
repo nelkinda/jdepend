@@ -2,8 +2,6 @@ package jdepend.framework;
 
 import java.util.*;
 
-import jdepend.framework.JavaPackage;
-
 /**
  * The <code>DependencyConstraint</code> class is a constraint that tests
  * whether two package-dependency graphs are equivalent.
@@ -45,14 +43,14 @@ import jdepend.framework.JavaPackage;
 
 public class DependencyConstraint {
 
-    private HashMap packages;
+    private final Map<String, JavaPackage> packages;
 
     public DependencyConstraint() {
-        packages = new HashMap();
+        packages = new HashMap<>();
     }
 
-    public JavaPackage addPackage(String packageName) {
-        JavaPackage jPackage = (JavaPackage) packages.get(packageName);
+    public JavaPackage addPackage(final String packageName) {
+        JavaPackage jPackage = packages.get(packageName);
         if (jPackage == null) {
             jPackage = new JavaPackage(packageName);
             addPackage(jPackage);
@@ -60,13 +58,13 @@ public class DependencyConstraint {
         return jPackage;
     }
 
-    public void addPackage(JavaPackage jPackage) {
+    public void addPackage(final JavaPackage jPackage) {
         if (!packages.containsValue(jPackage)) {
             packages.put(jPackage.getName(), jPackage);
         }
     }
 
-    public Collection getPackages() {
+    public Collection<JavaPackage> getPackages() {
         return packages.values();
     }
 
@@ -76,85 +74,53 @@ public class DependencyConstraint {
      * 
      * @return <code>true</code> if the packages match this constraint
      */
-    public boolean match(Collection expectedPackages) {
-
+    public boolean match(final Collection<JavaPackage> expectedPackages) {
         if (packages.size() == expectedPackages.size()) {
-            
-            for (Iterator i = expectedPackages.iterator(); i.hasNext();) {
-                Object next = i.next();
-                if (next instanceof JavaPackage) {
-                    JavaPackage nextPackage = (JavaPackage) next;
-                    if (!matchPackage(nextPackage)) {
-                        return false;
-                    }
-                } else {
-                    break;
-                }
-
-                return true;
+            for (final JavaPackage next : expectedPackages) {
+                if (!matchPackage(next))
+                    return false;
             }
+            return true;
         }
-
         return false;
     }
 
-    private boolean matchPackage(JavaPackage expectedPackage) {
-
-        JavaPackage actualPackage = (JavaPackage) packages.get(expectedPackage
-                .getName());
-
-        if (actualPackage != null) {
-            if (equalsDependencies(actualPackage, expectedPackage)) {
-                return true;
-            }
-        }
-
-        return false;
+    private boolean matchPackage(final JavaPackage expectedPackage) {
+        final JavaPackage actualPackage = packages.get(expectedPackage.getName());
+        return actualPackage != null && equalsDependencies(actualPackage, expectedPackage);
     }
 
-    private boolean equalsDependencies(JavaPackage a, JavaPackage b) {
+    private boolean equalsDependencies(final JavaPackage a, final JavaPackage b) {
         return equalsAfferents(a, b) && equalsEfferents(a, b);
     }
 
-    private boolean equalsAfferents(JavaPackage a, JavaPackage b) {
-
+    private boolean equalsAfferents(final JavaPackage a, final JavaPackage b) {
         if (a.equals(b)) {
-
-            Collection otherAfferents = b.getAfferents();
-
+            final Collection<JavaPackage> otherAfferents = b.getAfferents();
             if (a.getAfferents().size() == otherAfferents.size()) {
-                for (Iterator i = a.getAfferents().iterator(); i.hasNext();) {
-                    JavaPackage afferent = (JavaPackage)i.next();
+                for (final JavaPackage afferent : a.getAfferents()) {
                     if (!otherAfferents.contains(afferent)) {
                         return false;
                     }
                 }
-
                 return true;
             }
         }
-
         return false;
     }
 
-    private boolean equalsEfferents(JavaPackage a, JavaPackage b) {
-
+    private boolean equalsEfferents(final JavaPackage a, final JavaPackage b) {
         if (a.equals(b)) {
-
-            Collection otherEfferents = b.getEfferents();
-
+            final Collection<JavaPackage> otherEfferents = b.getEfferents();
             if (a.getEfferents().size() == otherEfferents.size()) {
-                for (Iterator i = a.getEfferents().iterator(); i.hasNext();) {
-                    JavaPackage efferent = (JavaPackage)i.next();
+                for (final JavaPackage efferent : a.getEfferents()) {
                     if (!otherEfferents.contains(efferent)) {
                         return false;
                     }
                 }
-
                 return true;
             }
         }
-
         return false;
     }
 }

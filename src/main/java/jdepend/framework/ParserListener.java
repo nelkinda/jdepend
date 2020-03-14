@@ -12,13 +12,11 @@ package jdepend.framework;
  */
 
 public interface ParserListener {
-
     /**
      * Called whenever a Java class file is parsed into the specified
      * <code>JavaClass</code> instance.
      * 
      * @param parsedClass Parsed Java class.
      */
-    public void onParsedJavaClass(JavaClass parsedClass);
-
+    void onParsedJavaClass(JavaClass parsedClass);
 }

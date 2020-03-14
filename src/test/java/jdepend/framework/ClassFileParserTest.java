@@ -50,7 +50,7 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertTrue(clazz.isAbstract());
 
-        assertEquals("jdepend.framework.ExampleInterface", clazz.getName());
+        assertEquals("jdepend.framework.ExampleInterface", clazz.getClassName());
 
         assertEquals("ExampleInterface.java", clazz.getSourceFile());
 
@@ -72,7 +72,7 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertTrue(clazz.isAbstract());
 
-        assertEquals("jdepend.framework.ExampleAbstractClass", clazz.getName());
+        assertEquals("jdepend.framework.ExampleAbstractClass", clazz.getClassName());
 
         assertEquals("ExampleAbstractClass.java", clazz.getSourceFile());
 
@@ -95,7 +95,7 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertFalse(clazz.isAbstract());
 
-        assertEquals("jdepend.framework.ExampleConcreteClass", clazz.getName());
+        assertEquals("jdepend.framework.ExampleConcreteClass", clazz.getClassName());
 
         assertEquals("ExampleConcreteClass.java", clazz.getSourceFile());
 
@@ -133,7 +133,7 @@ public class ClassFileParserTest extends JDependTestCase {
         assertFalse(clazz.isAbstract());
 
         assertEquals("jdepend.framework.ExampleConcreteClass$ExampleInnerClass",
-                clazz.getName());
+                clazz.getClassName());
 
         assertEquals("ExampleConcreteClass.java", clazz.getSourceFile());
 
@@ -151,7 +151,7 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertFalse(clazz.isAbstract());
 
-        assertEquals("jdepend.framework.ExamplePackageClass", clazz.getName());
+        assertEquals("jdepend.framework.ExamplePackageClass", clazz.getClassName());
 
         assertEquals("ExampleConcreteClass.java", clazz.getSourceFile());
 

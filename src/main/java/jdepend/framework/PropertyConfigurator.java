@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 
 public class PropertyConfigurator {
 
-    private Properties properties;
+    private final Properties properties;
 
     public static final String DEFAULT_PROPERTY_FILE = "jdepend.properties";
 
@@ -55,19 +55,17 @@ public class PropertyConfigurator {
         this(loadProperties(f));
     }
 
-    public Collection getFilteredPackages() {
+    public Collection<String> getFilteredPackages() {
+        final Collection<String> packages = new ArrayList<>();
 
-        Collection packages = new ArrayList();
-
-        Enumeration e = properties.propertyNames();
+        final Enumeration<String> e = (Enumeration<String>) properties.propertyNames();
         while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
+            final String key = e.nextElement();
             if (key.startsWith("ignore")) {
-                String path = properties.getProperty(key);
-                StringTokenizer st = new StringTokenizer(path, ",");
+                final String path = properties.getProperty(key);
+                final StringTokenizer st = new StringTokenizer(path, ",");
                 while (st.hasMoreTokens()) {
-                    String name = (String) st.nextToken();
-                    name = name.trim();
+                    final String name = st.nextToken().trim();
                     packages.add(name);
                 }
             }
@@ -76,17 +74,17 @@ public class PropertyConfigurator {
         return packages;
     }
 
-    public Collection getConfiguredPackages() {
+    public Collection<JavaPackage> getConfiguredPackages() {
 
-        Collection packages = new ArrayList();
+        Collection<JavaPackage> packages = new ArrayList<>();
 
-        Enumeration e = properties.propertyNames();
+        Enumeration<String> e = (Enumeration<String>) properties.propertyNames();
         while (e.hasMoreElements()) {
-            String key = (String)e.nextElement();
+            String key = e.nextElement();
             if (!key.startsWith("ignore")
                     && (!key.equals("analyzeInnerClasses"))) {
                 String v = properties.getProperty(key);
-                packages.add(new JavaPackage(key, new Integer(v).intValue()));
+                packages.add(new JavaPackage(key, new Integer(v)));
             }
         }
 
@@ -94,13 +92,11 @@ public class PropertyConfigurator {
     }
 
     public boolean getAnalyzeInnerClasses() {
-
         String key = "analyzeInnerClasses";
         if (properties.containsKey(key)) {
             String value = properties.getProperty(key);
-            return new Boolean(value).booleanValue();
+            return new Boolean(value);
         }
-
         return true;
     }
 
@@ -116,12 +112,9 @@ public class PropertyConfigurator {
         InputStream is = null;
 
         try {
-
             is = new FileInputStream(file);
-
         } catch (Exception e) {
-            is = PropertyConfigurator.class.getResourceAsStream("/"
-                    + DEFAULT_PROPERTY_FILE);
+            is = PropertyConfigurator.class.getResourceAsStream("/" + DEFAULT_PROPERTY_FILE);
         }
 
         try {

@@ -101,29 +101,23 @@ import java.util.*;
  */
 
 public class JDepend {
-
-    private HashMap packages;
-    private FileManager fileManager;
+    private final Map<String, JavaPackage> packages = new HashMap<>();
+    private final FileManager fileManager = new FileManager();
+    private final ClassFileParser parser;
+    private final JavaClassBuilder builder;
     private PackageFilter filter;
-    private ClassFileParser parser;
-    private JavaClassBuilder builder;
-    private Collection components;
+    private Collection<String> components;
 
     public JDepend() {
         this(new PackageFilter());
     }
 
-    public JDepend(PackageFilter filter) {
-
+    public JDepend(final PackageFilter filter) {
         setFilter(filter);
-
-        this.packages = new HashMap();
-        this.fileManager = new FileManager();
-
         this.parser = new ClassFileParser(filter);
         this.builder = new JavaClassBuilder(parser, fileManager);
 
-        PropertyConfigurator config = new PropertyConfigurator();
+        final PropertyConfigurator config = new PropertyConfigurator();
         addPackages(config.getConfiguredPackages());
         analyzeInnerClasses(config.getAnalyzeInnerClasses());
     }
@@ -134,14 +128,10 @@ public class JDepend {
      * 
      * @return Collection of analyzed packages.
      */
-    public Collection analyze() {
-
-        Collection classes = builder.build();
-        
-        for (Iterator i = classes.iterator(); i.hasNext();) {
-            analyzeClass((JavaClass)i.next());
-        }
-
+    public Collection<JavaPackage> analyze() {
+        final Collection<JavaClass> classes = builder.build();
+        for (final JavaClass aClass : classes)
+            analyzeClass(aClass);
         return getPackages();
     }
 
@@ -152,7 +142,7 @@ public class JDepend {
      * @param name Directory name.
      * @throws IOException If the directory is invalid.
      */
-    public void addDirectory(String name) throws IOException {
+    public void addDirectory(final String name) throws IOException {
         fileManager.addDirectory(name);
     }
     
@@ -161,11 +151,11 @@ public class JDepend {
      * 
      * @param components Comma-separated list of components.
      */
-    public void setComponents(String components) {
-        this.components = new ArrayList();
+    public void setComponents(final String components) {
+        this.components = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(components, ",");
         while (st.hasMoreTokens()) {
-            String component = st.nextToken();
+            final String component = st.nextToken();
             this.components.add(component);
         }
     }
@@ -179,7 +169,7 @@ public class JDepend {
      * @param b <code>true</code> to analyze inner classes; 
      *          <code>false</code> otherwise.
      */
-    public void analyzeInnerClasses(boolean b) {
+    public void analyzeInnerClasses(final boolean b) {
         fileManager.acceptInnerClasses(b);
     }
 
@@ -188,7 +178,7 @@ public class JDepend {
      * 
      * @return Collection of analyzed packages.
      */
-    public Collection getPackages() {
+    public Collection<JavaPackage> getPackages() {
         return packages.values();
     }
 
@@ -198,8 +188,8 @@ public class JDepend {
      * @param name Package name.
      * @return Package, or <code>null</code> if the package was not analyzed.
      */
-    public JavaPackage getPackage(String name) {
-        return (JavaPackage)packages.get(name);
+    public JavaPackage getPackage(final String name) {
+        return packages.get(name);
     }
 
     /**
@@ -226,13 +216,9 @@ public class JDepend {
      * @return <code>true</code> if one or more dependency cycles exist.
      */
     public boolean containsCycles() {
-        for (Iterator i = getPackages().iterator(); i.hasNext();) {
-            JavaPackage jPackage = (JavaPackage)i.next();
-            if (jPackage.containsCycle()) {
+        for (final JavaPackage jPackage : getPackages())
+            if (jPackage.containsCycle())
                 return true;
-            }
-        }
-
         return false;
     }
 
@@ -243,7 +229,7 @@ public class JDepend {
      * @return <code>true</code> if the packages match the dependency
      *         constraint
      */
-    public boolean dependencyMatch(DependencyConstraint constraint) {
+    public boolean dependencyMatch(final DependencyConstraint constraint) {
         return constraint.match(getPackages());
     }
 
@@ -252,7 +238,7 @@ public class JDepend {
      * 
      * @param listener Parser listener.
      */
-    public void addParseListener(ParserListener listener) {
+    public void addParseListener(final ParserListener listener) {
         parser.addParseListener(listener);
     }
 
@@ -265,7 +251,7 @@ public class JDepend {
      */
     public JavaPackage addPackage(String name) {
         name = toComponent(name);
-        JavaPackage pkg = (JavaPackage)packages.get(name);
+        JavaPackage pkg = packages.get(name);
         if (pkg == null) {
             pkg = new JavaPackage(name);
             addPackage(pkg);
@@ -274,10 +260,9 @@ public class JDepend {
         return pkg;
     }
 
-    private String toComponent(String packageName) {
+    private String toComponent(final String packageName) {
         if (components != null) {
-            for (Iterator i = components.iterator(); i.hasNext();) {
-                String component = (String)i.next();
+            for (final String component : components) {
                 if (packageName.startsWith(component + ".")) {
                     return component;
                 }
@@ -292,11 +277,9 @@ public class JDepend {
      * 
      * @param packages Collection of packages.
      */
-    public void addPackages(Collection packages) {
-        for (Iterator i = packages.iterator(); i.hasNext();) {
-            JavaPackage pkg = (JavaPackage)i.next();
+    public void addPackages(final Collection<JavaPackage> packages) {
+        for (final JavaPackage pkg : packages)
             addPackage(pkg);
-        }
     }
 
     /**
@@ -305,41 +288,34 @@ public class JDepend {
      * 
      * @param pkg Java package.
      */
-    public void addPackage(JavaPackage pkg) {
-        if (!packages.containsValue(pkg)) {
+    public void addPackage(final JavaPackage pkg) {
+        if (!packages.containsValue(pkg))
             packages.put(pkg.getName(), pkg);
-        }
     }
 
     public PackageFilter getFilter() {
-        if (filter == null) {
+        if (filter == null)
             filter = new PackageFilter();
-        }
-
         return filter;
     }
 
-    public void setFilter(PackageFilter filter) {
-        if (parser != null) {
+    public void setFilter(final PackageFilter filter) {
+        if (parser != null)
             parser.setFilter(filter);
-        }
         this.filter = filter;
     }
 
-    private void analyzeClass(JavaClass clazz) {
+    private void analyzeClass(final JavaClass clazz) {
+        final String packageName = clazz.getPackageName();
 
-        String packageName = clazz.getPackageName();
-
-        if (!getFilter().accept(packageName)) {
+        if (!getFilter().accept(packageName))
             return;
-        }
 
-        JavaPackage clazzPackage = addPackage(packageName);
+        final JavaPackage clazzPackage = addPackage(packageName);
         clazzPackage.addClass(clazz);
 
-        Collection imports = clazz.getImportedPackages();
-        for (Iterator i = imports.iterator(); i.hasNext();) {
-            JavaPackage importedPackage = (JavaPackage)i.next();
+        final Collection<JavaPackage> imports = clazz.getImportedPackages();
+        for (JavaPackage importedPackage : imports) {
             importedPackage = addPackage(importedPackage.getName());
             clazzPackage.dependsUpon(importedPackage);
         }
