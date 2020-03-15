@@ -30,7 +30,7 @@ public class StatusPanel extends JPanel {
      * 
      * @param component Status component.
      */
-    public void setStatusComponent(JComponent component) {
+    public void setStatusComponent(final JComponent component) {
         removeAll();
         add(component);
         repaint();

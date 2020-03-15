@@ -31,7 +31,7 @@ public class JDepend extends jdepend.textui.JDepend {
      * 
      * @param writer Writer.
      */
-    public JDepend(PrintWriter writer) {
+    public JDepend(final PrintWriter writer) {
         super(writer);
 
         formatter = NumberFormat.getInstance(Locale.ENGLISH);
@@ -55,13 +55,13 @@ public class JDepend extends jdepend.textui.JDepend {
         getWriter().println(tab() + "</Packages>");
     }
 
-    protected void printPackageHeader(JavaPackage jPackage) {
+    protected void printPackageHeader(final JavaPackage jPackage) {
         printSectionBreak();
         getWriter().println(
                 tab(2) + "<Package name=\"" + jPackage.getName() + "\">");
     }
 
-    protected void printPackageFooter(JavaPackage jPackage) {
+    protected void printPackageFooter(final JavaPackage jPackage) {
         getWriter().println(tab(2) + "</Package>");
     }
 
@@ -71,7 +71,7 @@ public class JDepend extends jdepend.textui.JDepend {
                         + "package referenced, but not analyzed.</error>");
     }
 
-    protected void printStatistics(JavaPackage jPackage) {
+    protected void printStatistics(final JavaPackage jPackage) {
         getWriter().println(tab(3) + "<Stats>");
         getWriter().println(
                 tab(4) + "<TotalClasses>" + jPackage.getClassCount()
@@ -99,7 +99,7 @@ public class JDepend extends jdepend.textui.JDepend {
         getWriter().println(tab(3) + "</Stats>");
     }
 
-    protected void printClassName(JavaClass jClass) {
+    protected void printClassName(final JavaClass jClass) {
         getWriter().println(
                 tab(4) + "<Class sourceFile=\"" + jClass.getSourceFile()
                         + "\">");
@@ -107,7 +107,7 @@ public class JDepend extends jdepend.textui.JDepend {
         getWriter().println(tab(4) + "</Class>");
     }
 
-    protected void printPackageName(JavaPackage jPackage) {
+    protected void printPackageName(final JavaPackage jPackage) {
         getWriter().println(
                 tab(4) + "<Package>" + jPackage.getName() + "</Package>");
     }
@@ -161,7 +161,7 @@ public class JDepend extends jdepend.textui.JDepend {
         getWriter().println(tab() + "</Cycles>");
     }
 
-    protected void printCycleHeader(JavaPackage jPackage) {
+    protected void printCycleHeader(final JavaPackage jPackage) {
         getWriter().println(
                 tab(2) + "<Package Name=\"" + jPackage.getName() + "\">");
     }
@@ -171,23 +171,23 @@ public class JDepend extends jdepend.textui.JDepend {
         printSectionBreak();
     }
 
-    protected void printCycleTarget(JavaPackage jPackage) {
+    protected void printCycleTarget(final JavaPackage jPackage) {
         printCycleContributor(jPackage);
     }
 
-    protected void printCycleContributor(JavaPackage jPackage) {
+    protected void printCycleContributor(final JavaPackage jPackage) {
         getWriter().println(
                 tab(3) + "<Package>" + jPackage.getName() + "</Package>");
     }
 
-    protected void printSummary(Collection packages) {
+    protected void printSummary(final Collection<JavaPackage> packages) {
         // do nothing
     }
 
     /**
      * Main.
      */
-    public static void main(String args[]) {
+    public static void main(final String... args) {
         new JDepend().instanceMain(args);
     }
 }

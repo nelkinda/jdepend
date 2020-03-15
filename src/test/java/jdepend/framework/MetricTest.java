@@ -104,8 +104,7 @@ public class MetricTest extends JDependTestCase {
     }
     
     private void assertXmlUIPackage() {
-
-        JavaPackage p = jdepend.getPackage("jdepend.xmlui");
+        final JavaPackage p = jdepend.getPackage("jdepend.xmlui");
         assertNotNull(p);
 
         assertEquals(1, p.getConcreteClassCount());
@@ -119,21 +118,19 @@ public class MetricTest extends JDependTestCase {
     }
 
     public void testConfiguredVolatility() throws IOException {
-
         jdepend.addDirectory(getJavaTestDir());
         jdepend.addDirectory(getJavaMainDir());
 
-        JavaPackage pkg = new JavaPackage("jdepend.swingui");
+        final JavaPackage pkg = new JavaPackage("jdepend.swingui");
         pkg.setVolatility(0);
 
         jdepend.addPackage(pkg);
-
         jdepend.analyze();
 
-        JavaPackage analyzedPkg = jdepend.getPackage(pkg.getName());
+        final JavaPackage analyzedPkg = jdepend.getPackage(pkg.getName());
         assertEquals(0, analyzedPkg.getVolatility());
         assertEquals(format(0.0f), format(analyzedPkg.distance()));
-        assertEquals(7, analyzedPkg.getConcreteClassCount());
+        assertEquals(6, analyzedPkg.getConcreteClassCount());
     }
 
     private String format(float f) {

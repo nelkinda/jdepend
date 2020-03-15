@@ -33,8 +33,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * 
      * @param model Depend tree model.
      */
-    public DependTree(DependTreeModel model) {
-
+    public DependTree(final DependTreeModel model) {
         setBorder(BorderFactory.createTitledBorder(model.getRoot().toString()));
 
         setModel(model);
@@ -51,11 +50,10 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * 
      * @param model Tree model.
      */
-    public void setModel(DependTreeModel model) {
+    public void setModel(final DependTreeModel model) {
         this.model = model;
         setBorder(BorderFactory.createTitledBorder(model.getRoot().toString()));
         getTree().setModel(this.model);
-
     }
 
     /**
@@ -72,7 +70,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * 
      * @param l Tree selection listener.
      */
-    public void addTreeSelectionListener(TreeSelectionListener l) {
+    public void addTreeSelectionListener(final TreeSelectionListener l) {
         getTree().addTreeSelectionListener(l);
     }
 
@@ -82,12 +80,11 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * 
      * @param te Event that characterizes the change.
      */
-    public void valueChanged(TreeSelectionEvent te) {
-
-        TreePath path = te.getNewLeadSelectionPath();
+    public void valueChanged(final TreeSelectionEvent te) {
+        final TreePath path = te.getNewLeadSelectionPath();
 
         if (path != null) {
-            Object o = path.getLastPathComponent();
+            final Object o = path.getLastPathComponent();
         }
     }
 
@@ -97,8 +94,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * @return Scroll pane.
      */
     private JScrollPane createScrollPane() {
-        JScrollPane pane = new JScrollPane(getTree());
-        return pane;
+        return new JScrollPane(getTree());
     }
 
     /**
@@ -107,25 +103,19 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * @return Tree.
      */
     private JTree createTree() {
-
-        JTree tree = new JTree();
+        final JTree tree = new JTree();
         tree.setShowsRootHandles(false);
         tree.setFont(new Font("Dialog", Font.PLAIN, 12));
         tree.addTreeSelectionListener(this);
         tree.setRootVisible(false);
         tree.setLargeModel(true);
-
         return tree;
     }
 
-    /*
-     * Returns the peered tree. @return A non-null tree.
-     */
     private JTree getTree() {
         if (tree == null) {
             tree = createTree();
         }
-
         return tree;
     }
 }

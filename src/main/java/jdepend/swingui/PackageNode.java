@@ -14,18 +14,16 @@ import jdepend.framework.*;
  */
 
 public abstract class PackageNode {
-
-    private PackageNode parent;
-
-    private JavaPackage jPackage;
-
-    private ArrayList children;
-
-    private static NumberFormat formatter;
+    private static final NumberFormat formatter;
     static {
         formatter = NumberFormat.getInstance();
         formatter.setMaximumFractionDigits(2);
     }
+
+    private final PackageNode parent;
+    private final JavaPackage jPackage;
+
+    private List<PackageNode> children;
 
     /**
      * Constructs a <code>PackageNode</code> with the specified package and
@@ -34,7 +32,7 @@ public abstract class PackageNode {
      * @param parent Parent package node.
      * @param jPackage Java package.
      */
-    public PackageNode(PackageNode parent, JavaPackage jPackage) {
+    public PackageNode(final PackageNode parent, final JavaPackage jPackage) {
         this.parent = parent;
         this.jPackage = jPackage;
         children = null;
@@ -65,11 +63,7 @@ public abstract class PackageNode {
      *         otherwise.
      */
     public boolean isLeaf() {
-        if (getCoupledPackages().size() > 0) {
-            return false;
-        }
-
-        return true;
+        return getCoupledPackages().size() <= 0;
     }
 
     /**
@@ -80,8 +74,7 @@ public abstract class PackageNode {
      * @param jPackage Java package.
      * @return A non-null <code>PackageNode</code.
      */
-    protected abstract PackageNode makeNode(PackageNode parent,
-            JavaPackage jPackage);
+    protected abstract PackageNode makeNode(PackageNode parent, JavaPackage jPackage);
 
     /**
      * Returns the collection of Java packages coupled to the package
@@ -89,7 +82,7 @@ public abstract class PackageNode {
      * 
      * @return Collection of coupled packages.
      */
-    protected abstract Collection getCoupledPackages();
+    protected abstract Collection<JavaPackage> getCoupledPackages();
 
     /**
      * Indicates whether the specified package should be displayed as a child of
@@ -99,7 +92,7 @@ public abstract class PackageNode {
      * @return <code>true</code> to display the package; <code>false</code>
      *         otherwise.
      */
-    public boolean isChild(JavaPackage jPackage) {
+    public boolean isChild(final JavaPackage jPackage) {
         return true;
     }
 
@@ -108,18 +101,14 @@ public abstract class PackageNode {
      * 
      * @return Collection of child package nodes.
      */
-    public ArrayList getChildren() {
-
+    public List<PackageNode> getChildren() {
         if (children == null) {
-
-            children = new ArrayList();
-            ArrayList packages = new ArrayList(getCoupledPackages());
-            Collections.sort(packages, JavaPackage.byName);
-            Iterator i = packages.iterator();
-            while (i.hasNext()) {
-                JavaPackage jPackage = (JavaPackage) i.next();
+            children = new ArrayList<>();
+            final List<JavaPackage> packages = new ArrayList<>(getCoupledPackages());
+            packages.sort(JavaPackage.byName);
+            for (final JavaPackage jPackage : packages) {
                 if (isChild(jPackage)) {
-                    PackageNode childNode = makeNode(this, jPackage);
+                    final PackageNode childNode = makeNode(this, jPackage);
                     children.add(childNode);
                 }
             }
@@ -134,7 +123,7 @@ public abstract class PackageNode {
      * @return Metrics string.
      */
     public String toMetricsString() {
-        StringBuffer label = new StringBuffer();
+        final StringBuilder label = new StringBuilder();
         label.append(getPackage().getName());
         label.append("  (");
         label.append("CC: " + getPackage().getConcreteClassCount() + "  ");
@@ -161,11 +150,9 @@ public abstract class PackageNode {
      * @return Node label.
      */
     public String toString() {
-
         if (getParent().getParent() == null) {
             return toMetricsString();
         }
-
         return getPackage().getName();
     }
 
@@ -173,7 +160,7 @@ public abstract class PackageNode {
      * Returns the specified number in a displayable format. @param number
      * Number to format. @return Formatted number.
      */
-    private static String format(float f) {
+    private static String format(final float f) {
         return formatter.format(f);
     }
 }

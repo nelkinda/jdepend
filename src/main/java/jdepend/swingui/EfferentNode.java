@@ -21,7 +21,7 @@ public class EfferentNode extends PackageNode {
      * @param parent Parent package node.
      * @param jPackage Efferent Java package.
      */
-    public EfferentNode(PackageNode parent, JavaPackage jPackage) {
+    public EfferentNode(final PackageNode parent, final JavaPackage jPackage) {
         super(parent, jPackage);
     }
 
@@ -33,7 +33,7 @@ public class EfferentNode extends PackageNode {
      * @param jPackage Java package.
      * @return A non-null <code>PackageNode</code.
      */
-    protected PackageNode makeNode(PackageNode parent, JavaPackage jPackage) {
+    protected PackageNode makeNode(final PackageNode parent, final JavaPackage jPackage) {
         return new EfferentNode(parent, jPackage);
     }
 
@@ -43,7 +43,7 @@ public class EfferentNode extends PackageNode {
      * 
      * @return Collection of coupled packages.
      */
-    protected Collection getCoupledPackages() {
+    protected Collection<JavaPackage> getCoupledPackages() {
         return getPackage().getEfferents();
     }
 
@@ -58,14 +58,8 @@ public class EfferentNode extends PackageNode {
      * @return <code>true</code> to display the package; <code>false</code>
      *         otherwise.
      */
-    public boolean isChild(JavaPackage jPackage) {
-        if (getParent() != null) {
-            return true;
-        } else if (jPackage.getClassCount() > 0) {
-            return true;
-        }
-
-        return false;
+    public boolean isChild(final JavaPackage jPackage) {
+        return getParent() != null || jPackage.getClassCount() > 0;
     }
 
     /**
@@ -76,10 +70,8 @@ public class EfferentNode extends PackageNode {
      */
     public String toString() {
         if (getParent() == null) {
-            return "Depends Upon - Efferent Dependencies" + " ("
-                    + getChildren().size() + " Packages)";
+            return "Depends Upon - Efferent Dependencies" + " (" + getChildren().size() + " Packages)";
         }
-
         return super.toString();
     }
 }

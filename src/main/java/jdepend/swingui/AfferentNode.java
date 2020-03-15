@@ -21,7 +21,7 @@ public class AfferentNode extends PackageNode {
      * @param parent Parent package node.
      * @param jPackage Afferent Java package.
      */
-    public AfferentNode(PackageNode parent, JavaPackage jPackage) {
+    public AfferentNode(final PackageNode parent, final JavaPackage jPackage) {
         super(parent, jPackage);
     }
 
@@ -33,7 +33,7 @@ public class AfferentNode extends PackageNode {
      * @param jPackage Java package.
      * @return A non-null <code>PackageNode</code.
      */
-    protected PackageNode makeNode(PackageNode parent, JavaPackage jPackage) {
+    protected PackageNode makeNode(final PackageNode parent, final JavaPackage jPackage) {
         return new AfferentNode(parent, jPackage);
     }
 
@@ -43,7 +43,7 @@ public class AfferentNode extends PackageNode {
      * 
      * @return Collection of coupled packages.
      */
-    protected Collection getCoupledPackages() {
+    protected Collection<JavaPackage> getCoupledPackages() {
         return getPackage().getAfferents();
     }
 
@@ -53,6 +53,7 @@ public class AfferentNode extends PackageNode {
      * 
      * @return Node label.
      */
+    @Override
     public String toString() {
         if (getParent() == null) {
             return "Used By - Afferent Dependencies" + " ("

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -13,6 +14,10 @@ import jdepend.framework.JavaClass;
 import jdepend.framework.JavaPackage;
 import jdepend.framework.PackageFilter;
 import jdepend.framework.ParserListener;
+
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+import static javax.swing.JOptionPane.showMessageDialog;
+import static javax.swing.SwingUtilities.invokeLater;
 
 /**
  * The <code>JDepend</code> class analyzes directories of Java class files,
@@ -24,6 +29,7 @@ import jdepend.framework.ParserListener;
  */
 
 public class JDepend implements ParserListener {
+    private static final Font BOLD_FONT = new Font("dialog", Font.BOLD, 12);
 
     private jdepend.framework.JDepend analyzer;
 
@@ -43,13 +49,11 @@ public class JDepend implements ParserListener {
 
     private Hashtable actions;
 
-    private static Font BOLD_FONT = new Font("dialog", Font.BOLD, 12);
 
     /**
      * Constructs a <code>JDepend</code> instance.
      */
     public JDepend() {
-
         analyzer = new jdepend.framework.JDepend();
 
         analyzer.addParseListener(this);
@@ -87,7 +91,7 @@ public class JDepend implements ParserListener {
      * @param name Directory name.
      * @throws IOException If the directory does not exist.
      */
-    public void addDirectory(String name) throws IOException {
+    public void addDirectory(final String name) throws IOException {
         analyzer.addDirectory(name);
     }
 
@@ -96,14 +100,14 @@ public class JDepend implements ParserListener {
      * 
      * @param filter Package filter.
      */
-    public void setFilter(PackageFilter filter) {
+    public void setFilter(final PackageFilter filter) {
         analyzer.setFilter(filter);
     }
 
     /**
      * Sets the comma-separated list of components.
      */
-    public void setComponents(String components) {
+    public void setComponents(final String components) {
         analyzer.setComponents(components);
     }
     
@@ -112,17 +116,11 @@ public class JDepend implements ParserListener {
      * package, and reports the metrics in a graphical format.
      */
     public void analyze() {
-
         display();
-
         startProgressMonitor(analyzer.countClasses());
-
-        ArrayList packages = new ArrayList(analyzer.analyze());
-
-        Collections.sort(packages, JavaPackage.byName);
-
+        final List<JavaPackage> packages = new ArrayList<>(analyzer.analyze());
+        packages.sort(JavaPackage.byName);
         stopProgressMonitor();
-
         updateTree(packages);
     }
 
@@ -133,12 +131,7 @@ public class JDepend implements ParserListener {
      * @param jClass Parsed Java class.
      */
     public void onParsedJavaClass(final JavaClass jClass) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                getProgressBar().setValue(getProgressBar().getValue() + 1);
-            }
-        });
+        invokeLater(() -> getProgressBar().setValue(getProgressBar().getValue() + 1));
     }
 
     private void display() {
@@ -146,71 +139,60 @@ public class JDepend implements ParserListener {
         frame.setVisible(true);
     }
 
-    private void updateTree(ArrayList packages) {
-
-        JavaPackage jPackage = new JavaPackage("root");
+    private void updateTree(final List<JavaPackage> packages) {
+        final JavaPackage jPackage = new JavaPackage("root");
         jPackage.setAfferents(packages);
         jPackage.setEfferents(packages);
 
-        AfferentNode ah = new AfferentNode(null, jPackage);
+        final AfferentNode ah = new AfferentNode(null, jPackage);
         getAfferentTree().setModel(new DependTreeModel(ah));
 
-        EfferentNode eh = new EfferentNode(null, jPackage);
+        final EfferentNode eh = new EfferentNode(null, jPackage);
         getEfferentTree().setModel(new DependTreeModel(eh));
     }
 
     private void startProgressMonitor(final int maxValue) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                getProgressBar().setMinimum(0);
-                getProgressBar().setMaximum(maxValue);
-                getStatusPanel().setStatusComponent(getProgressBar());
-            }
+        invokeLater(() -> {
+            getProgressBar().setMinimum(0);
+            getProgressBar().setMaximum(maxValue);
+            getStatusPanel().setStatusComponent(getProgressBar());
         });
     }
 
     private void stopProgressMonitor() {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                getStatusPanel().setStatusComponent(getStatusField());
-                int classCount = analyzer.countClasses();
-                int packageCount = analyzer.countPackages();
-                showStatusMessage("Analyzed " + packageCount + " packages ("
-                        + classCount + " classes).");
-            }
+        invokeLater(() -> {
+            getStatusPanel().setStatusComponent(getStatusField());
+            int classCount = analyzer.countClasses();
+            int packageCount = analyzer.countPackages();
+            showStatusMessage("Analyzed " + packageCount + " packages (" + classCount + " classes).");
         });
     }
 
     private JFrame createUI() {
-
-        JFrame frame = createFrame("JDepend");
-
-        JMenuBar menuBar = createMenubar();
+        final JFrame frame = createFrame("JDepend");
+        final JMenuBar menuBar = createMenubar();
         frame.setJMenuBar(menuBar);
 
-        JPanel treePanel = createTreePanel();
+        final JPanel treePanel = createTreePanel();
         StatusPanel statusPanel = getStatusPanel();
 
         frame.getContentPane().add("Center", treePanel);
         frame.getContentPane().add("South", statusPanel);
         frame.pack();
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = 700;
-        int height = 500;
-        int x = (screenSize.width - width) / 2;
-        int y = (screenSize.height - height) / 2;
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        final int width = 700;
+        final int height = 500;
+        final int x = (screenSize.width - width) / 2;
+        final int y = (screenSize.height - height) / 2;
         frame.setBounds(x, y, width, height);
         frame.setSize(width, height);
 
         return frame;
     }
 
-    private JFrame createFrame(String title) {
-
-        JFrame frame = new JFrame(title);
+    private JFrame createFrame(final String title) {
+        final JFrame frame = new JFrame(title);
 
         frame.getContentPane().setLayout(new BorderLayout());
         frame.setBackground(SystemColor.control);
@@ -226,8 +208,7 @@ public class JDepend implements ParserListener {
     }
 
     private JPanel createTreePanel() {
-
-        JPanel panel = new JPanel();
+        final JPanel panel = new JPanel();
 
         panel.setLayout(new GridLayout(2, 1));
         panel.add(getEfferentTree());
@@ -246,57 +227,49 @@ public class JDepend implements ParserListener {
     }
 
     private StatusPanel createStatusPanel() {
-        StatusPanel panel = new StatusPanel();
+        final StatusPanel panel = new StatusPanel();
         panel.setStatusComponent(getStatusField());
-
         return panel;
     }
 
     private JProgressBar createProgressBar() {
-        JProgressBar bar = new JProgressBar();
+        final JProgressBar bar = new JProgressBar();
         bar.setStringPainted(true);
-
         return bar;
     }
 
     private JTextField createStatusField() {
-        JTextField statusField = new JTextField();
+        final JTextField statusField = new JTextField();
         statusField.setFont(BOLD_FONT);
         statusField.setEditable(false);
         statusField.setForeground(Color.black);
-        statusField.setBorder(BorderFactory
-                .createBevelBorder(BevelBorder.LOWERED));
-
-        Insets insets = new Insets(5, 5, 5, 5);
+        statusField.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        final Insets insets = new Insets(5, 5, 5, 5);
         statusField.setMargin(insets);
-
         return statusField;
     }
 
     private JMenuBar createMenubar() {
+        final JMenuBar menuBar = new JMenuBar();
 
-        JMenuBar menuBar = new JMenuBar();
-
-        String[] menuKeys = tokenize((String) resourceStrings.get("menubar"));
-        for (int i = 0; i < menuKeys.length; i++) {
-            JMenu m = createMenu(menuKeys[i]);
+        final String[] menuKeys = tokenize((String) resourceStrings.get("menubar"));
+        for (final String menuKey : menuKeys) {
+            final JMenu m = createMenu(menuKey);
             if (m != null) {
                 menuBar.add(m);
             }
         }
-
         return menuBar;
     }
 
-    private JMenu createMenu(String key) {
-
-        String[] itemKeys = tokenize((String) resourceStrings.get(key));
-        JMenu menu = new JMenu(key);
-        for (int i = 0; i < itemKeys.length; i++) {
-            if (itemKeys[i].equals("-")) {
+    private JMenu createMenu(final String key) {
+        final String[] itemKeys = tokenize((String) resourceStrings.get(key));
+        final JMenu menu = new JMenu(key);
+        for (final String itemKey : itemKeys) {
+            if (itemKey.equals("-")) {
                 menu.addSeparator();
             } else {
-                JMenuItem mi = createMenuItem(itemKeys[i]);
+                final JMenuItem mi = createMenuItem(itemKey);
                 menu.add(mi);
             }
         }
@@ -307,21 +280,19 @@ public class JDepend implements ParserListener {
         return menu;
     }
 
-    private JMenuItem createMenuItem(String key) {
+    private JMenuItem createMenuItem(final String key) {
+        final JMenuItem mi = new JMenuItem(key);
 
-        JMenuItem mi = new JMenuItem(key);
-
-        char mnemonic = key.charAt(0);
+        final char mnemonic = key.charAt(0);
         mi.setMnemonic(mnemonic);
 
-        char accelerator = key.charAt(0);
-        mi.setAccelerator(KeyStroke.getKeyStroke(accelerator,
-                java.awt.Event.CTRL_MASK));
+        final char accelerator = key.charAt(0);
+        mi.setAccelerator(KeyStroke.getKeyStroke(accelerator, java.awt.Event.CTRL_MASK));
 
-        String actionString = key;
+        final String actionString = key;
         mi.setActionCommand(actionString);
 
-        Action a = getActionForCommand(actionString);
+        final Action a = getActionForCommand(actionString);
         if (a != null) {
             mi.addActionListener(a);
             mi.setEnabled(a.isEnabled());
@@ -384,7 +355,7 @@ public class JDepend implements ParserListener {
         return statusField;
     }
 
-    private Action getActionForCommand(String command) {
+    private Action getActionForCommand(final String command) {
         return (Action) actions.get(command);
     }
 
@@ -392,39 +363,29 @@ public class JDepend implements ParserListener {
      * Parses the specified string into an array of strings on whitespace
      * boundaries. @param input String to tokenize. @return Strings.
      */
-    private String[] tokenize(String input) {
+    private String[] tokenize(final String input) {
 
-        Vector v = new Vector();
+        final List<String> v = new ArrayList<>();
         StringTokenizer t = new StringTokenizer(input);
 
         while (t.hasMoreTokens()) {
-            v.addElement(t.nextToken());
+            v.add(t.nextToken());
         }
 
-        String cmd[] = new String[v.size()];
+        final String[] cmd = new String[v.size()];
         for (int i = 0; i < cmd.length; i++) {
-            cmd[i] = (String) v.elementAt(i);
+            cmd[i] = v.get(i);
         }
 
         return cmd;
     }
 
     private void postStatusMessage(final String message) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                showStatusMessage(message);
-            }
-        });
+        invokeLater(() -> showStatusMessage(message));
     }
 
     private void postStatusError(final String message) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                showStatusError(message);
-            }
-        });
+        invokeLater(() -> showStatusError(message));
     }
 
     //
@@ -445,8 +406,7 @@ public class JDepend implements ParserListener {
          * @param te Event that characterizes the change.
          */
         public void valueChanged(TreeSelectionEvent te) {
-
-            TreePath path = te.getNewLeadSelectionPath();
+            final TreePath path = te.getNewLeadSelectionPath();
 
             if (path != null) {
                 PackageNode node = (PackageNode) path.getLastPathComponent();
@@ -455,26 +415,17 @@ public class JDepend implements ParserListener {
         }
     }
 
-    //
-    // About action handler.
-    //
     private class AboutAction extends AbstractAction {
-
-        /**
-         * Constructs an <code>AboutAction</code> instance.
-         */
         AboutAction() {
             super("About");
         }
-
-        /**
-         * Handles the action.
-         */
-        public void actionPerformed(ActionEvent e) {
-            AboutDialog d = new AboutDialog(frame);
-            d.setModal(true);
-            d.setLocation(300, 300);
-            d.show();
+        public void actionPerformed(final ActionEvent e) {
+            showMessageDialog(
+                    frame,
+                    "<html><h1>JDepend</h1>Mike Clark<br>Clarkware Consulting<br><a href=\"http://www.clarkware.com/\">www.clarkware.com</a>",
+                    "About",
+                    PLAIN_MESSAGE
+            );
         }
     }
 
@@ -493,7 +444,7 @@ public class JDepend implements ParserListener {
         /**
          * Handles the action.
          */
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(final ActionEvent e) {
             frame.dispose();
             System.exit(0);
         }
@@ -504,7 +455,7 @@ public class JDepend implements ParserListener {
             System.err.println("\n" + message);
         }
 
-        String baseUsage = "\nJDepend ";
+        final String baseUsage = "\nJDepend ";
 
         System.err.println("");
         System.err.println("usage: ");
@@ -513,8 +464,7 @@ public class JDepend implements ParserListener {
         System.exit(1);
     }
 
-    private void instanceMain(String[] args) {
-
+    private void instanceMain(final String... args) {
         if (args.length < 1) {
             usage("Must specify at least one directory.");
         }
@@ -548,7 +498,8 @@ public class JDepend implements ParserListener {
         analyze();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String... args) {
+        System.err.println(String.join(", ", args));
         new JDepend().instanceMain(args);
     }
 }
