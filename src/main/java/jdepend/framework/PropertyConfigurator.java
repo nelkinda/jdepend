@@ -75,12 +75,11 @@ public class PropertyConfigurator {
     }
 
     public Collection<JavaPackage> getConfiguredPackages() {
+        final Collection<JavaPackage> packages = new ArrayList<>();
 
-        Collection<JavaPackage> packages = new ArrayList<>();
-
-        Enumeration<String> e = (Enumeration<String>) properties.propertyNames();
+        final Enumeration<String> e = (Enumeration<String>) properties.propertyNames();
         while (e.hasMoreElements()) {
-            String key = e.nextElement();
+            final String key = e.nextElement();
             if (!key.startsWith("ignore")
                     && (!key.equals("analyzeInnerClasses"))) {
                 String v = properties.getProperty(key);
@@ -92,28 +91,26 @@ public class PropertyConfigurator {
     }
 
     public boolean getAnalyzeInnerClasses() {
-        String key = "analyzeInnerClasses";
+        final String key = "analyzeInnerClasses";
         if (properties.containsKey(key)) {
-            String value = properties.getProperty(key);
+            final String value = properties.getProperty(key);
             return new Boolean(value);
         }
         return true;
     }
 
     public static File getDefaultPropertyFile() {
-        String home = System.getProperty("user.home");
+        final String home = System.getProperty("user.home");
         return new File(home, DEFAULT_PROPERTY_FILE);
     }
 
     public static Properties loadProperties(File file) {
-
-        Properties p = new Properties();
-
+        final Properties p = new Properties();
         InputStream is = null;
 
         try {
             is = new FileInputStream(file);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             is = PropertyConfigurator.class.getResourceAsStream("/" + DEFAULT_PROPERTY_FILE);
         }
 
@@ -121,7 +118,7 @@ public class PropertyConfigurator {
             if (is != null) {
                 p.load(is);
             }
-        } catch (IOException ignore) {
+        } catch (final IOException ignore) {
         } finally {
             try {
                 if (is != null) {

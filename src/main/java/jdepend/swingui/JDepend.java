@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -18,6 +19,8 @@ import jdepend.framework.ParserListener;
 import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.SwingUtilities.invokeLater;
+import static javax.swing.UIManager.getCrossPlatformLookAndFeelClassName;
+import static javax.swing.UIManager.setLookAndFeel;
 
 /**
  * The <code>JDepend</code> class analyzes directories of Java class files,
@@ -31,57 +34,37 @@ import static javax.swing.SwingUtilities.invokeLater;
 public class JDepend implements ParserListener {
     private static final Font BOLD_FONT = new Font("dialog", Font.BOLD, 12);
 
-    private jdepend.framework.JDepend analyzer;
+    private final jdepend.framework.JDepend analyzer;
+
+    private final Map<String, String> resourceStrings = Map.of(
+            "menubar", "File",
+            "File", "About Exit"
+    );
+
+    private final Map<String, Action> actions = Map.of(
+            "About", new AboutAction(),
+            "Exit", new ExitAction()
+    );
 
     private JFrame frame;
-
     private StatusPanel statusPanel;
-
     private JTextField statusField;
-
     private JProgressBar progressBar;
-
     private DependTree afferentTree;
-
     private DependTree efferentTree;
 
-    private Hashtable resourceStrings;
-
-    private Hashtable actions;
-
-
-    /**
-     * Constructs a <code>JDepend</code> instance.
-     */
     public JDepend() {
+        setCrossPlatformLookAndFeel();
         analyzer = new jdepend.framework.JDepend();
-
         analyzer.addParseListener(this);
+    }
 
-        //
-        // Force the cross platform L&F.
-        //
+    private static void setCrossPlatformLookAndFeel() {
         try {
-            UIManager.setLookAndFeel(UIManager
-                    .getCrossPlatformLookAndFeelClassName());
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
+            setLookAndFeel(getCrossPlatformLookAndFeelClassName());
+        } catch (final Exception e) {
             e.printStackTrace();
         }
-
-        //
-        // Install the resource string table.
-        //
-        resourceStrings = new Hashtable();
-        resourceStrings.put("menubar", "File");
-        resourceStrings.put("File", "About Exit");
-
-        //
-        // Install the action table.
-        //
-        actions = new Hashtable();
-        actions.put("About", new AboutAction());
-        actions.put("Exit", new ExitAction());
     }
 
     /**
@@ -251,19 +234,14 @@ public class JDepend implements ParserListener {
 
     private JMenuBar createMenubar() {
         final JMenuBar menuBar = new JMenuBar();
-
-        final String[] menuKeys = tokenize((String) resourceStrings.get("menubar"));
-        for (final String menuKey : menuKeys) {
-            final JMenu m = createMenu(menuKey);
-            if (m != null) {
-                menuBar.add(m);
-            }
+        for (final String menuKey : tokenize(resourceStrings.get("menubar"))) {
+            menuBar.add(createMenu(menuKey));
         }
         return menuBar;
     }
 
     private JMenu createMenu(final String key) {
-        final String[] itemKeys = tokenize((String) resourceStrings.get(key));
+        final String[] itemKeys = tokenize(resourceStrings.get(key));
         final JMenu menu = new JMenu(key);
         for (final String itemKey : itemKeys) {
             if (itemKey.equals("-")) {
@@ -274,7 +252,7 @@ public class JDepend implements ParserListener {
             }
         }
 
-        char mnemonic = key.charAt(0);
+        final char mnemonic = key.charAt(0);
         menu.setMnemonic(mnemonic);
 
         return menu;
@@ -299,7 +277,6 @@ public class JDepend implements ParserListener {
         } else {
             mi.setEnabled(false);
         }
-
         return mi;
     }
 
@@ -320,7 +297,6 @@ public class JDepend implements ParserListener {
             afferentTree = new DependTree();
             afferentTree.addTreeSelectionListener(new TreeListener());
         }
-
         return afferentTree;
     }
 
@@ -329,7 +305,6 @@ public class JDepend implements ParserListener {
             efferentTree = new DependTree();
             efferentTree.addTreeSelectionListener(new TreeListener());
         }
-
         return efferentTree;
     }
 
@@ -344,7 +319,6 @@ public class JDepend implements ParserListener {
         if (progressBar == null) {
             progressBar = createProgressBar();
         }
-
         return progressBar;
     }
 
@@ -356,7 +330,7 @@ public class JDepend implements ParserListener {
     }
 
     private Action getActionForCommand(final String command) {
-        return (Action) actions.get(command);
+        return actions.get(command);
     }
 
     /*
@@ -364,20 +338,11 @@ public class JDepend implements ParserListener {
      * boundaries. @param input String to tokenize. @return Strings.
      */
     private String[] tokenize(final String input) {
-
-        final List<String> v = new ArrayList<>();
-        StringTokenizer t = new StringTokenizer(input);
-
-        while (t.hasMoreTokens()) {
-            v.add(t.nextToken());
-        }
-
-        final String[] cmd = new String[v.size()];
-        for (int i = 0; i < cmd.length; i++) {
-            cmd[i] = v.get(i);
-        }
-
-        return cmd;
+        return Collections
+                .list(new StringTokenizer(input))
+                .stream()
+                .map(token -> (String) token)
+                .toArray(String[]::new);
     }
 
     private void postStatusMessage(final String message) {
@@ -499,8 +464,6 @@ public class JDepend implements ParserListener {
     }
 
     public static void main(final String... args) {
-        System.err.println(String.join(", ", args));
         new JDepend().instanceMain(args);
     }
 }
-
