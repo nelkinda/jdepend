@@ -7,8 +7,8 @@ import javax.swing.BoxLayout;
 /**
  * The <code>StatusPanel</code> class defines the status-related UI
  * components.
- * <p>
- * This panel primarily contains either a text field or a progress bar.
+ *
+ * <p>This panel primarily contains either a text field or a progress bar.
  * 
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.

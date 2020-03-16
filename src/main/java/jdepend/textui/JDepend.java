@@ -127,41 +127,41 @@ public class JDepend {
         printPackagesFooter();
     }
 
-    protected void printPackage(JavaPackage jPackage) {
+    protected void printPackage(JavaPackage javaPackage) {
 
-        printPackageHeader(jPackage);
+        printPackageHeader(javaPackage);
 
-        if (jPackage.getClasses().isEmpty()) {
+        if (javaPackage.getClasses().isEmpty()) {
             printNoStats();
-            printPackageFooter(jPackage);
+            printPackageFooter(javaPackage);
             return;
         }
 
-        printStatistics(jPackage);
+        printStatistics(javaPackage);
 
         printSectionBreak();
 
-        printAbstractClasses(jPackage);
+        printAbstractClasses(javaPackage);
 
         printSectionBreak();
 
-        printConcreteClasses(jPackage);
+        printConcreteClasses(javaPackage);
 
         printSectionBreak();
 
-        printEfferents(jPackage);
+        printEfferents(javaPackage);
 
         printSectionBreak();
 
-        printAfferents(jPackage);
+        printAfferents(javaPackage);
 
-        printPackageFooter(jPackage);
+        printPackageFooter(javaPackage);
     }
 
-    protected void printAbstractClasses(final JavaPackage jPackage) {
+    protected void printAbstractClasses(final JavaPackage javaPackage) {
         printAbstractClassesHeader();
 
-        final List<JavaClass> members = new ArrayList<>(jPackage.getClasses());
+        final List<JavaClass> members = new ArrayList<>(javaPackage.getClasses());
         members.sort(JavaClass.byName);
         for (final JavaClass jClass : members) {
             if (jClass.isAbstract()) {
@@ -172,10 +172,10 @@ public class JDepend {
         printAbstractClassesFooter();
     }
 
-    protected void printConcreteClasses(final JavaPackage jPackage) {
+    protected void printConcreteClasses(final JavaPackage javaPackage) {
         printConcreteClassesHeader();
 
-        final List<JavaClass> members = new ArrayList<>(jPackage.getClasses());
+        final List<JavaClass> members = new ArrayList<>(javaPackage.getClasses());
         members.sort(JavaClass.byName);
         for (final JavaClass concrete : members) {
             if (!concrete.isAbstract()) {
@@ -186,10 +186,10 @@ public class JDepend {
         printConcreteClassesFooter();
     }
 
-    protected void printEfferents(final JavaPackage jPackage) {
+    protected void printEfferents(final JavaPackage javaPackage) {
         printEfferentsHeader();
 
-        final List<JavaPackage> efferents = new ArrayList<>(jPackage.getEfferents());
+        final List<JavaPackage> efferents = new ArrayList<>(javaPackage.getEfferents());
         efferents.sort(JavaPackage.byName);
         for (JavaPackage efferent : efferents) {
             printPackageName(efferent);
@@ -201,10 +201,10 @@ public class JDepend {
         printEfferentsFooter();
     }
 
-    protected void printAfferents(final JavaPackage jPackage) {
+    protected void printAfferents(final JavaPackage javaPackage) {
         printAfferentsHeader();
 
-        final List<JavaPackage> afferents = new ArrayList<>(jPackage.getAfferents());
+        final List<JavaPackage> afferents = new ArrayList<>(javaPackage.getAfferents());
         afferents.sort(JavaPackage.byName);
         for (final JavaPackage afferent : afferents) {
             printPackageName(afferent);
@@ -226,28 +226,28 @@ public class JDepend {
         printCyclesFooter();
     }
 
-    protected void printCycle(final JavaPackage jPackage) {
+    protected void printCycle(final JavaPackage javaPackage) {
         final List<JavaPackage> list = new ArrayList<>();
-        jPackage.collectCycle(list);
+        javaPackage.collectCycle(list);
 
-        if (!jPackage.containsCycle()) {
+        if (!javaPackage.containsCycle()) {
             return;
         }
 
-        final JavaPackage cyclePackage = (JavaPackage) list.get(list.size() - 1);
+        final JavaPackage cyclePackage = list.get(list.size() - 1);
         String cyclePackageName = cyclePackage.getName();
 
         int i = 0;
-        for (final JavaPackage javaPackage : list) {
+        for (final JavaPackage otherPackage : list) {
             i++;
 
             if (i == 1) {
-                printCycleHeader(javaPackage);
+                printCycleHeader(otherPackage);
             } else {
-                if (javaPackage.getName().equals(cyclePackageName)) {
-                    printCycleTarget(javaPackage);
+                if (otherPackage.getName().equals(cyclePackageName)) {
+                    printCycleTarget(otherPackage);
                 } else {
-                    printCycleContributor(javaPackage);
+                    printCycleContributor(otherPackage);
                 }
             }
         }
@@ -276,40 +276,40 @@ public class JDepend {
                 "No stats available: package referenced, but not analyzed.");
     }
 
-    protected void printPackageHeader(final JavaPackage jPackage) {
+    protected void printPackageHeader(final JavaPackage javaPackage) {
         getWriter().println(
                 "\n--------------------------------------------------");
-        getWriter().println("- Package: " + jPackage.getName());
+        getWriter().println("- Package: " + javaPackage.getName());
         getWriter().println(
                 "--------------------------------------------------");
     }
 
-    protected void printPackageFooter(final JavaPackage jPackage) {
+    protected void printPackageFooter(final JavaPackage javaPackage) {
         // do nothing
     }
 
-    protected void printStatistics(final JavaPackage jPackage) {
+    protected void printStatistics(final JavaPackage javaPackage) {
         getWriter().println("\nStats:");
-        getWriter().println(tab() + "Total Classes: " + jPackage.getClassCount());
+        getWriter().println(tab() + "Total Classes: " + javaPackage.getClassCount());
         getWriter().println(tab() + "Concrete Classes: "
-                                + jPackage.getConcreteClassCount());
+                                + javaPackage.getConcreteClassCount());
         getWriter().println(tab() + "Abstract Classes: "
-                                + jPackage.getAbstractClassCount());
+                                + javaPackage.getAbstractClassCount());
         getWriter().println("");
-        getWriter().println(tab() + "Ca: " + jPackage.afferentCoupling());
-        getWriter().println(tab() + "Ce: " + jPackage.efferentCoupling());
+        getWriter().println(tab() + "Ca: " + javaPackage.afferentCoupling());
+        getWriter().println(tab() + "Ce: " + javaPackage.efferentCoupling());
         getWriter().println("");
-        getWriter().println(tab() + "A: " + toFormattedString(jPackage.abstractness()));
-        getWriter().println(tab() + "I: " + toFormattedString(jPackage.instability()));
-        getWriter().println(tab() + "D: " + toFormattedString(jPackage.distance()));
+        getWriter().println(tab() + "A: " + toFormattedString(javaPackage.abstractness()));
+        getWriter().println(tab() + "I: " + toFormattedString(javaPackage.instability()));
+        getWriter().println(tab() + "D: " + toFormattedString(javaPackage.distance()));
     }
 
-    protected void printClassName(final JavaClass jClass) {
-        getWriter().println(tab() + jClass.getClassName());
+    protected void printClassName(final JavaClass javaClass) {
+        getWriter().println(tab() + javaClass.getClassName());
     }
 
-    protected void printPackageName(final JavaPackage jPackage) {
-        getWriter().println(tab() + jPackage.getName());
+    protected void printPackageName(final JavaPackage javaPackage) {
+        getWriter().println(tab() + javaPackage.getName());
     }
 
     protected void printAbstractClassesHeader() {
@@ -365,17 +365,17 @@ public class JDepend {
         // do nothing
     }
 
-    protected void printCycleHeader(final JavaPackage jPackage) {
-        getWriter().println(jPackage.getName());
+    protected void printCycleHeader(final JavaPackage javaPackage) {
+        getWriter().println(javaPackage.getName());
         getWriter().println(tab() + "|");
     }
 
-    protected void printCycleTarget(final JavaPackage jPackage) {
-        getWriter().println(tab() + "|-> " + jPackage.getName());
+    protected void printCycleTarget(final JavaPackage javaPackage) {
+        getWriter().println(tab() + "|-> " + javaPackage.getName());
     }
 
-    protected void printCycleContributor(final JavaPackage jPackage) {
-        getWriter().println(tab() + "|   " + jPackage.getName());
+    protected void printCycleContributor(final JavaPackage javaPackage) {
+        getWriter().println(tab() + "|   " + javaPackage.getName());
     }
 
     protected void printCycleFooter() {
@@ -435,9 +435,9 @@ public class JDepend {
 
         System.err.println("");
         System.err.println("usage: ");
-        System.err.println(baseUsage + "[-components <components>]" +
-            " [-file <output file>] <directory> " + 
-            "[directory2 [directory 3] ...]");
+        System.err.println(baseUsage + "[-components <components>]"
+                + " [-file <output file>] <directory> "
+                + "[directory2 [directory 3] ...]");
         System.exit(1);
     }
 

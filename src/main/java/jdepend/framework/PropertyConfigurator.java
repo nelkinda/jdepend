@@ -104,6 +104,7 @@ public class PropertyConfigurator {
         return new File(home, DEFAULT_PROPERTY_FILE);
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     public static Properties loadProperties(File file) {
         final Properties p = new Properties();
         InputStream is = null;

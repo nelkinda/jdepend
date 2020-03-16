@@ -130,8 +130,9 @@ public class JDepend {
      */
     public Collection<JavaPackage> analyze() {
         final Collection<JavaClass> classes = builder.build();
-        for (final JavaClass aClass : classes)
+        for (final JavaClass aClass : classes) {
             analyzeClass(aClass);
+        }
         return getPackages();
     }
 
@@ -216,9 +217,11 @@ public class JDepend {
      * @return <code>true</code> if one or more dependency cycles exist.
      */
     public boolean containsCycles() {
-        for (final JavaPackage jPackage : getPackages())
-            if (jPackage.containsCycle())
+        for (final JavaPackage jPackage : getPackages()) {
+            if (jPackage.containsCycle()) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -242,10 +245,33 @@ public class JDepend {
         parser.addParseListener(listener);
     }
 
+    private String toComponent(final String packageName) {
+        if (components != null) {
+            for (final String component : components) {
+                if (packageName.startsWith(component + ".")) {
+                    return component;
+                }
+            }
+        }
+        return packageName;
+    }
+
+    /**
+     * Adds the specified collection of packages to the collection
+     * of analyzed packages.
+     *
+     * @param packages Collection of packages.
+     */
+    public void addPackages(final Collection<JavaPackage> packages) {
+        for (final JavaPackage pkg : packages) {
+            addPackage(pkg);
+        }
+    }
+
     /**
      * Adds the specified Java package name to the collection of analyzed
      * packages.
-     * 
+     *
      * @param name Java package name.
      * @return Added Java package.
      */
@@ -260,28 +286,6 @@ public class JDepend {
         return pkg;
     }
 
-    private String toComponent(final String packageName) {
-        if (components != null) {
-            for (final String component : components) {
-                if (packageName.startsWith(component + ".")) {
-                    return component;
-                }
-            }
-        }
-        return packageName;
-    }
-
-    /**
-     * Adds the specified collection of packages to the collection 
-     * of analyzed packages.
-     * 
-     * @param packages Collection of packages.
-     */
-    public void addPackages(final Collection<JavaPackage> packages) {
-        for (final JavaPackage pkg : packages)
-            addPackage(pkg);
-    }
-
     /**
      * Adds the specified Java package to the collection of 
      * analyzed packages.
@@ -289,27 +293,31 @@ public class JDepend {
      * @param pkg Java package.
      */
     public void addPackage(final JavaPackage pkg) {
-        if (!packages.containsValue(pkg))
+        if (!packages.containsValue(pkg)) {
             packages.put(pkg.getName(), pkg);
+        }
     }
 
     public PackageFilter getFilter() {
-        if (filter == null)
+        if (filter == null) {
             filter = new PackageFilter();
+        }
         return filter;
     }
 
     public void setFilter(final PackageFilter filter) {
-        if (parser != null)
+        if (parser != null) {
             parser.setFilter(filter);
+        }
         this.filter = filter;
     }
 
     private void analyzeClass(final JavaClass clazz) {
         final String packageName = clazz.getPackageName();
 
-        if (!getFilter().accept(packageName))
+        if (!getFilter().accept(packageName)) {
             return;
+        }
 
         final JavaPackage clazzPackage = addPackage(packageName);
         clazzPackage.addClass(clazz);

@@ -32,18 +32,19 @@ public abstract class AbstractParser {
     /**
      * Registered parser listeners are informed that the resulting
      * <code>JavaClass</code> was parsed.
+     * @throws IOException in case of I/O problems reading from {@code inputStream}
      */
-    public abstract JavaClass parse(final InputStream is) throws IOException;
+    public abstract JavaClass parse(final InputStream inputStream) throws IOException;
 
     /**
      * Informs registered parser listeners that the specified
      * <code>JavaClass</code> was parsed.
      * 
-     * @param jClass Parsed Java class.
+     * @param javaClass Parsed Java class.
      */
-    protected void onParsedJavaClass(final JavaClass jClass) {
+    protected void onParsedJavaClass(final JavaClass javaClass) {
         for (final ParserListener parserListener : parserListeners) {
-            parserListener.onParsedJavaClass(jClass);
+            parserListener.onParsedJavaClass(javaClass);
         }
     }
 

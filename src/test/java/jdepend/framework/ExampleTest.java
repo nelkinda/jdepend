@@ -38,8 +38,7 @@ public class ExampleTest extends TestCase {
         filter.addPackage("javax.*");
         jdepend = new JDepend(filter);
 
-        String classesDir = 
-            jdependHomeDirectory + File.separator + "build";
+        String classesDir = jdependHomeDirectory + File.separator + "build";
 
         jdepend.addDirectory(classesDir);
     }
@@ -111,6 +110,7 @@ public class ExampleTest extends TestCase {
      * Fails if any package dependency other than those declared 
      * in the dependency constraints are detected.
      */
+    @SuppressWarnings("VariableDeclarationUsageDistance")
     public void ignoredTestDependencyConstraint() {
 
         DependencyConstraint constraint = new DependencyConstraint();

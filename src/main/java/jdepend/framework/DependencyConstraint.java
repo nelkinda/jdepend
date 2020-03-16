@@ -50,17 +50,17 @@ public class DependencyConstraint {
     }
 
     public JavaPackage addPackage(final String packageName) {
-        JavaPackage jPackage = packages.get(packageName);
-        if (jPackage == null) {
-            jPackage = new JavaPackage(packageName);
-            addPackage(jPackage);
+        JavaPackage javaPackage = packages.get(packageName);
+        if (javaPackage == null) {
+            javaPackage = new JavaPackage(packageName);
+            addPackage(javaPackage);
         }
-        return jPackage;
+        return javaPackage;
     }
 
-    public void addPackage(final JavaPackage jPackage) {
-        if (!packages.containsValue(jPackage)) {
-            packages.put(jPackage.getName(), jPackage);
+    public void addPackage(final JavaPackage javaPackage) {
+        if (!packages.containsValue(javaPackage)) {
+            packages.put(javaPackage.getName(), javaPackage);
         }
     }
 
@@ -77,8 +77,9 @@ public class DependencyConstraint {
     public boolean match(final Collection<JavaPackage> expectedPackages) {
         if (packages.size() == expectedPackages.size()) {
             for (final JavaPackage next : expectedPackages) {
-                if (!matchPackage(next))
+                if (!matchPackage(next)) {
                     return false;
+                }
             }
             return true;
         }

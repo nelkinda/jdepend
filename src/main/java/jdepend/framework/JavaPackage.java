@@ -58,8 +58,7 @@ public class JavaPackage {
      *
      * @param list Collecting object to be populated with the list of
      *             JavaPackage instances in a cycle.
-     * @return <code>true</code> if a cycle exist; <code>false</code>
-     * otherwise.
+     * @return <code>true</code> if a cycle exist; <code>false</code> otherwise.
      */
     public boolean collectCycle(final List<JavaPackage> list) {
         if (list.contains(this)) {
@@ -83,14 +82,13 @@ public class JavaPackage {
     /**
      * Collects all the packages participating in a package dependency cycle
      * which originates from this package.
-     * <p>
-     * This is a more exhaustive search than that employed by
+     *
+     * <p>This is a more exhaustive search than that employed by
      * <code>collectCycle</code>.
      *
      * @param list Collecting object to be populated with the list of
      *             JavaPackage instances in a cycle.
-     * @return <code>true</code> if a cycle exist; <code>false</code>
-     * otherwise.
+     * @return <code>true</code> if a cycle exist; <code>false</code> otherwise.
      */
     public boolean collectAllCycles(final List<JavaPackage> list) {
 
@@ -166,11 +164,11 @@ public class JavaPackage {
     /**
      * Adds the specified Java package as an afferent of this package.
      *
-     * @param jPackage Java package.
+     * @param javaPackage Java package.
      */
-    public void addAfferent(final JavaPackage jPackage) {
-        if (!jPackage.getName().equals(getName()) && !afferents.contains(jPackage)) {
-            afferents.add(jPackage);
+    public void addAfferent(final JavaPackage javaPackage) {
+        if (!javaPackage.getName().equals(getName()) && !afferents.contains(javaPackage)) {
+            afferents.add(javaPackage);
         }
     }
 
@@ -182,9 +180,9 @@ public class JavaPackage {
         this.afferents = new ArrayList<>(afferents);
     }
 
-    public void addEfferent(final JavaPackage jPackage) {
-        if (!jPackage.getName().equals(getName()) && !efferents.contains(jPackage)) {
-            efferents.add(jPackage);
+    public void addEfferent(final JavaPackage javaPackage) {
+        if (!javaPackage.getName().equals(getName()) && !efferents.contains(javaPackage)) {
+            efferents.add(javaPackage);
         }
     }
 

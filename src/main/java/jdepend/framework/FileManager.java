@@ -74,14 +74,14 @@ public class FileManager {
         } else if (directory.isDirectory()) {
             final String[] directoryFiles = directory.list();
             assert directoryFiles != null;
-                for (final String directoryFile: directoryFiles) {
-                    final File file = new File(directory, directoryFile);
-                    if (acceptFile(file)) {
-                        addFile(file, files);
-                    } else if (file.isDirectory()) {
-                        collectFiles(file, files);
-                    }
+            for (final String directoryFile: directoryFiles) {
+                final File file = new File(directory, directoryFile);
+                if (acceptFile(file)) {
+                    addFile(file, files);
+                } else if (file.isDirectory()) {
+                    collectFiles(file, files);
                 }
+            }
         }
     }
 

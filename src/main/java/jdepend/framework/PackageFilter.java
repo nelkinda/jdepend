@@ -6,8 +6,8 @@ import java.util.*;
 /**
  * The <code>PackageFilter</code> class is used to filter imported 
  * package names.
- * <p>
- * The default filter contains any packages declared in the
+ *
+ * <p>The default filter contains any packages declared in the
  * <code>jdepend.properties</code> file, if such a file exists 
  * either in the user's home directory or somewhere in the classpath.
  * 
@@ -79,8 +79,9 @@ public class PackageFilter {
     }
 
     public void addPackages(final Collection<String> packageNames) {
-        for (final String packageName : packageNames)
+        for (final String packageName : packageNames) {
             addPackage(packageName);
+        }
     }
 
     public void addPackage(String packageName) {

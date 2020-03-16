@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'checkstyle'
+//    id 'pmd'
 }
 
 group = 'com.nelkinda.tools'
@@ -21,6 +23,34 @@ dependencies {
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.6.0'
 }
 
+checkstyleMain {
+    configFile = file("config/checkstyle/checkstyleMain.xml")
+    maxWarnings = 0
+}
+
+checkstyleTest {
+    configFile = file("config/checkstyle/checkstyleTest.xml")
+    maxWarnings = 0
+}
+
+//pmd {
+//    ruleSets = []
+//    consoleOutput = true
+//    dependencies {
+//        pmd 'net.sourceforge.pmd:pmd:6.21.0'
+//        pmd 'net.sourceforge.pmd:pmd-core:6.21.0'
+//        pmd 'net.sourceforge.pmd:pmd-java:6.21.0'
+//    }
+//}
+//
+//pmdMain {
+//    ruleSetFiles = files("config/pmd/pmdMain.xml")
+//}
+//
+//pmdTest {
+//    ruleSetFiles = files("config/pmd/pmdTest.xml")
+//}
+
 test {
     useJUnitPlatform()
 }
@@ -28,4 +58,5 @@ test {
 wrapper {
     gradleVersion "6.2.2"
     jarFile ".gradle/wrapper/gradle-wrapper.jar"
+    distributionType = Wrapper.DistributionType.ALL
 }

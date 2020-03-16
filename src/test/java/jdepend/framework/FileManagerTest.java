@@ -74,12 +74,12 @@ public class FileManagerTest extends JDependTestCase {
         testZip(".jar");
     }
 
-    public void testZip() throws IOException {
-        testZip(".zip");
-    }
-
     public void testWar() throws IOException {
         testZip(".war");
+    }
+
+    public void testZip() throws IOException {
+        testZip(".zip");
     }
 
     private void testZip(final String suffix) throws IOException {

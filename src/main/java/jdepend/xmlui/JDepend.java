@@ -38,148 +38,175 @@ public class JDepend extends jdepend.textui.JDepend {
         formatter.setMaximumFractionDigits(2);
     }
 
+    @Override
     protected void printHeader() {
         getWriter().println("<?xml version=\"1.0\"?>");
         getWriter().println("<JDepend>");
     }
 
+    @Override
     protected void printFooter() {
         getWriter().println("</JDepend>");
     }
 
+    @Override
     protected void printPackagesHeader() {
         getWriter().println(tab() + "<Packages>");
     }
 
+    @Override
     protected void printPackagesFooter() {
         getWriter().println(tab() + "</Packages>");
     }
 
-    protected void printPackageHeader(final JavaPackage jPackage) {
+    @Override
+    protected void printPackageHeader(final JavaPackage javaPackage) {
         printSectionBreak();
         getWriter().println(
-                tab(2) + "<Package name=\"" + jPackage.getName() + "\">");
+                tab(2) + "<Package name=\"" + javaPackage.getName() + "\">");
     }
 
-    protected void printPackageFooter(final JavaPackage jPackage) {
+    @Override
+    protected void printPackageFooter(final JavaPackage javaPackage) {
         getWriter().println(tab(2) + "</Package>");
     }
 
+    @Override
     protected void printNoStats() {
         getWriter().println(
                 tab(3) + "<error>No stats available: "
                         + "package referenced, but not analyzed.</error>");
     }
 
-    protected void printStatistics(final JavaPackage jPackage) {
+    @Override
+    protected void printStatistics(final JavaPackage javaPackage) {
         getWriter().println(tab(3) + "<Stats>");
         getWriter().println(
-                tab(4) + "<TotalClasses>" + jPackage.getClassCount()
+                tab(4) + "<TotalClasses>" + javaPackage.getClassCount()
                         + "</TotalClasses>");
         getWriter().println(
-                tab(4) + "<ConcreteClasses>" + jPackage.getConcreteClassCount()
+                tab(4) + "<ConcreteClasses>" + javaPackage.getConcreteClassCount()
                         + "</ConcreteClasses>");
         getWriter().println(
-                tab(4) + "<AbstractClasses>" + jPackage.getAbstractClassCount()
+                tab(4) + "<AbstractClasses>" + javaPackage.getAbstractClassCount()
                         + "</AbstractClasses>");
         getWriter().println(
-                tab(4) + "<Ca>" + jPackage.afferentCoupling() + "</Ca>");
+                tab(4) + "<Ca>" + javaPackage.afferentCoupling() + "</Ca>");
         getWriter().println(
-                tab(4) + "<Ce>" + jPackage.efferentCoupling() + "</Ce>");
+                tab(4) + "<Ce>" + javaPackage.efferentCoupling() + "</Ce>");
         getWriter().println(
-                tab(4) + "<A>" + toFormattedString(jPackage.abstractness())
+                tab(4) + "<A>" + toFormattedString(javaPackage.abstractness())
                         + "</A>");
         getWriter().println(
-                tab(4) + "<I>" + toFormattedString(jPackage.instability())
+                tab(4) + "<I>" + toFormattedString(javaPackage.instability())
                         + "</I>");
         getWriter().println(
-                tab(4) + "<D>" + toFormattedString(jPackage.distance())
+                tab(4) + "<D>" + toFormattedString(javaPackage.distance())
                         + "</D>");
-        getWriter().println(tab(4) + "<V>" + jPackage.getVolatility() + "</V>");
+        getWriter().println(tab(4) + "<V>" + javaPackage.getVolatility() + "</V>");
         getWriter().println(tab(3) + "</Stats>");
     }
 
-    protected void printClassName(final JavaClass jClass) {
+    @Override
+    protected void printClassName(final JavaClass javaClass) {
         getWriter().println(
-                tab(4) + "<Class sourceFile=\"" + jClass.getSourceFile()
+                tab(4) + "<Class sourceFile=\"" + javaClass.getSourceFile()
                         + "\">");
-        getWriter().println(tab(5) + jClass.getClassName());
+        getWriter().println(tab(5) + javaClass.getClassName());
         getWriter().println(tab(4) + "</Class>");
     }
 
-    protected void printPackageName(final JavaPackage jPackage) {
+    @Override
+    protected void printPackageName(final JavaPackage javaPackage) {
         getWriter().println(
-                tab(4) + "<Package>" + jPackage.getName() + "</Package>");
+                tab(4) + "<Package>" + javaPackage.getName() + "</Package>");
     }
 
+    @Override
     protected void printAbstractClassesHeader() {
         getWriter().println(tab(3) + "<AbstractClasses>");
     }
 
+    @Override
     protected void printAbstractClassesFooter() {
         getWriter().println(tab(3) + "</AbstractClasses>");
     }
 
+    @Override
     protected void printConcreteClassesHeader() {
         getWriter().println(tab(3) + "<ConcreteClasses>");
     }
 
+    @Override
     protected void printConcreteClassesFooter() {
         getWriter().println(tab(3) + "</ConcreteClasses>");
     }
 
+    @Override
     protected void printEfferentsHeader() {
         getWriter().println(tab(3) + "<DependsUpon>");
     }
 
+    @Override
     protected void printEfferentsFooter() {
         getWriter().println(tab(3) + "</DependsUpon>");
     }
 
+    @Override
     protected void printEfferentsError() {
         // do nothing
     }
 
+    @Override
     protected void printAfferentsHeader() {
         getWriter().println(tab(3) + "<UsedBy>");
     }
 
+    @Override
     protected void printAfferentsFooter() {
         getWriter().println(tab(3) + "</UsedBy>");
     }
 
+    @Override
     protected void printAfferentsError() {
         // do nothing
     }
 
+    @Override
     protected void printCyclesHeader() {
         printSectionBreak();
         getWriter().println(tab() + "<Cycles>");
     }
 
+    @Override
     protected void printCyclesFooter() {
         getWriter().println(tab() + "</Cycles>");
     }
 
-    protected void printCycleHeader(final JavaPackage jPackage) {
+    @Override
+    protected void printCycleHeader(final JavaPackage javaPackage) {
         getWriter().println(
-                tab(2) + "<Package Name=\"" + jPackage.getName() + "\">");
+                tab(2) + "<Package Name=\"" + javaPackage.getName() + "\">");
     }
 
+    @Override
     protected void printCycleFooter() {
         getWriter().println(tab(2) + "</Package>");
         printSectionBreak();
     }
 
-    protected void printCycleTarget(final JavaPackage jPackage) {
-        printCycleContributor(jPackage);
+    @Override
+    protected void printCycleTarget(final JavaPackage javaPackage) {
+        printCycleContributor(javaPackage);
     }
 
-    protected void printCycleContributor(final JavaPackage jPackage) {
+    @Override
+    protected void printCycleContributor(final JavaPackage javaPackage) {
         getWriter().println(
-                tab(3) + "<Package>" + jPackage.getName() + "</Package>");
+                tab(3) + "<Package>" + javaPackage.getName() + "</Package>");
     }
 
+    @Override
     protected void printSummary(final Collection<JavaPackage> packages) {
         // do nothing
     }

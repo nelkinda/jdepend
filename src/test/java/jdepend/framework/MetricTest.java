@@ -53,9 +53,9 @@ public class MetricTest extends JDependTestCase {
         jdepend.analyze();
 
         assertFrameworkPackage();
-        assertTextUIPackage();
-        assertSwingUIPackage();
-        assertXmlUIPackage();
+        assertTextUiPackage();
+        assertSwingUiPackage();
+        assertXmlUiPackage();
     }
 
     private void assertFrameworkPackage() {
@@ -73,7 +73,7 @@ public class MetricTest extends JDependTestCase {
         assertEquals(1, p.getVolatility());
     }
 
-    private void assertTextUIPackage() {
+    private void assertTextUiPackage() {
 
         JavaPackage p = jdepend.getPackage("jdepend.textui");
         assertNotNull(p);
@@ -88,7 +88,7 @@ public class MetricTest extends JDependTestCase {
         assertEquals(1, p.getVolatility());
     }
 
-    private void assertSwingUIPackage() {
+    private void assertSwingUiPackage() {
 
         JavaPackage p = jdepend.getPackage("jdepend.swingui");
         assertNotNull(p);
@@ -103,7 +103,7 @@ public class MetricTest extends JDependTestCase {
         assertEquals(1, p.getVolatility());
     }
     
-    private void assertXmlUIPackage() {
+    private void assertXmlUiPackage() {
         final JavaPackage p = jdepend.getPackage("jdepend.xmlui");
         assertNotNull(p);
 

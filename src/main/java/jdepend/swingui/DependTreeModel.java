@@ -40,8 +40,8 @@ public class DependTreeModel implements TreeModel {
     /**
      * Returns the child of the specified parent at the specified index in the
      * parent's child collection.
-     * <p>
-     * The specified parent must be a node previously obtained from this data
+     *
+     * <p>The specified parent must be a node previously obtained from this data
      * source.
      * 
      * @param parent A node in the tree, obtained from this data source.
@@ -60,8 +60,8 @@ public class DependTreeModel implements TreeModel {
 
     /**
      * Returns the number of children for the specified parent.
-     * <p>
-     * The specified parent must be a node previously obtained from this data
+     *
+     * <p>The specified parent must be a node previously obtained from this data
      * source.
      * 
      * @param parent A node in the tree, obtained from this data source.

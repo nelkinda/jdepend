@@ -32,7 +32,7 @@ public class JavaClassBuilder {
 
     public int countClasses() {
         final AbstractParser counter = new AbstractParser() {
-            public JavaClass parse(final InputStream is) {
+            public JavaClass parse(final InputStream inputStream) {
                 return new JavaClass("");
             }
         };
@@ -64,6 +64,7 @@ public class JavaClassBuilder {
      * 
      * @param file Class or Jar file.
      * @return Collection of <code>JavaClass</code> instances.
+     * @throws IOException in case of I/O problems.
      */
     public Collection<JavaClass> buildClasses(final File file) throws IOException {
         if (fileManager.acceptClassFile(file)) {
@@ -76,9 +77,9 @@ public class JavaClassBuilder {
                 return buildClasses(jarFile);
             }
         } else {
-            throw new IOException("File is not a valid " + 
-                ".class, .jar, .war, or .zip file: " + 
-                file.getPath());
+            throw new IOException("File is not a valid "
+                    + ".class, .jar, .war, or .zip file: "
+                    + file.getPath());
         }
     }
 
@@ -88,8 +89,9 @@ public class JavaClassBuilder {
      * 
      * @param file Jar, war, or zip file.
      * @return Collection of <code>JavaClass</code> instances.
+     * @throws IOException in case of I/O problems.
      */
-    public Collection<JavaClass> buildClasses(JarFile file) throws IOException {
+    public Collection<JavaClass> buildClasses(final JarFile file) throws IOException {
         final Collection<JavaClass> javaClasses = new ArrayList<>();
 
         final Enumeration<JarEntry> entries = file.entries();

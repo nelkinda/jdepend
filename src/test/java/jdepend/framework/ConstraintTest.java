@@ -67,6 +67,7 @@ public class ConstraintTest extends JDependTestCase {
         assertFalse(jdepend.dependencyMatch(constraint));
     }
 
+    @SuppressWarnings("VariableDeclarationUsageDistance")
     public void ignoredTestJDependConstraints() throws IOException {
 
         jdepend.addDirectory(getJavaMainDir());

@@ -19,10 +19,10 @@ public class EfferentNode extends PackageNode {
      * and efferent Java package.
      * 
      * @param parent Parent package node.
-     * @param jPackage Efferent Java package.
+     * @param javaPackage Efferent Java package.
      */
-    public EfferentNode(final PackageNode parent, final JavaPackage jPackage) {
-        super(parent, jPackage);
+    public EfferentNode(final PackageNode parent, final JavaPackage javaPackage) {
+        super(parent, javaPackage);
     }
 
     /**
@@ -30,11 +30,11 @@ public class EfferentNode extends PackageNode {
      * parent node and Java package.
      * 
      * @param parent Parent package node.
-     * @param jPackage Java package.
-     * @return A non-null <code>PackageNode</code.
+     * @param javaPackage Java package.
+     * @return A non-null <code>PackageNode</code>.
      */
-    protected PackageNode makeNode(final PackageNode parent, final JavaPackage jPackage) {
-        return new EfferentNode(parent, jPackage);
+    protected PackageNode makeNode(final PackageNode parent, final JavaPackage javaPackage) {
+        return new EfferentNode(parent, javaPackage);
     }
 
     /**
@@ -50,16 +50,17 @@ public class EfferentNode extends PackageNode {
     /**
      * Indicates whether the specified package should be displayed as a child of
      * this node.
-     * <p>
-     * Efferent packages without classes are never shown at the root level to
+     *
+     * <p>* Efferent packages without classes are never shown at the root level to
      * exclude non-analyzed packages.
      * 
-     * @param jPackage Package to test.
+     * @param javaPackage Package to test.
      * @return <code>true</code> to display the package; <code>false</code>
      *         otherwise.
      */
-    public boolean isChild(final JavaPackage jPackage) {
-        return getParent() != null || jPackage.getClassCount() > 0;
+    @Override
+    public boolean isChild(final JavaPackage javaPackage) {
+        return getParent() != null || javaPackage.getClassCount() > 0;
     }
 
     /**
@@ -68,6 +69,7 @@ public class EfferentNode extends PackageNode {
      * 
      * @return Node label.
      */
+    @Override
     public String toString() {
         if (getParent() == null) {
             return "Depends Upon - Efferent Dependencies" + " (" + getChildren().size() + " Packages)";

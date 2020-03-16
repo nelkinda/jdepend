@@ -132,8 +132,8 @@ public class CycleTest extends JDependTestCase {
         assertListEquals(cCycles, new String[] { "C", "A", "B", "A"});
     }
 
+    @SuppressWarnings("VariableDeclarationUsageDistance")
     public void test5Node2BranchCycle() {
-
         JavaPackage a = new JavaPackage("A");
         JavaPackage b = new JavaPackage("B");
         JavaPackage c = new JavaPackage("C");
@@ -148,38 +148,36 @@ public class CycleTest extends JDependTestCase {
         d.dependsUpon(e);
         e.dependsUpon(a);
 
-        List aCycles = new ArrayList();
-        assertEquals(true, a.containsCycle());
-        assertEquals(true, a.collectCycle(aCycles));
+        final List<JavaPackage> aCycles = new ArrayList<>();
+        assertTrue(a.containsCycle());
+        assertTrue(a.collectCycle(aCycles));
         assertListEquals(aCycles, new String[] { "A", "B", "C", "A"});
 
-        List bCycles = new ArrayList();
-        assertEquals(true, b.containsCycle());
-        assertEquals(true, b.collectCycle(bCycles));
+        final List<JavaPackage> bCycles = new ArrayList<>();
+        assertTrue(b.containsCycle());
+        assertTrue(b.collectCycle(bCycles));
         assertListEquals(bCycles, new String[] { "B", "C", "A", "B"});
 
-        List cCycles = new ArrayList();
-        assertEquals(true, c.containsCycle());
-        assertEquals(true, c.collectCycle(cCycles));
+        final List<JavaPackage> cCycles = new ArrayList<>();
+        assertTrue(c.containsCycle());
+        assertTrue(c.collectCycle(cCycles));
         assertListEquals(cCycles, new String[] { "C", "A", "B", "C"});
 
-        List dCycles = new ArrayList();
-        assertEquals(true, d.containsCycle());
-        assertEquals(true, d.collectCycle(dCycles));
+        final List<JavaPackage> dCycles = new ArrayList<>();
+        assertTrue(d.containsCycle());
+        assertTrue(d.collectCycle(dCycles));
         assertListEquals(dCycles, new String[] { "D", "E", "A", "B", "C", "A"});
 
-        List eCycles = new ArrayList();
-        assertEquals(true, e.containsCycle());
-        assertEquals(true, e.collectCycle(eCycles));
+        final List<JavaPackage> eCycles = new ArrayList<>();
+        assertTrue(e.containsCycle());
+        assertTrue(e.collectCycle(eCycles));
         assertListEquals(eCycles, new String[] { "E", "A", "B", "C", "A"});
     }
 
-    protected void assertListEquals(List list, String names[]) {
-
+    protected void assertListEquals(final List<JavaPackage> list, final String[] names) {
         assertEquals(names.length, list.size());
-
         for (int i = 0; i < names.length; i++) {
-            assertEquals(names[i], ((JavaPackage) list.get(i)).getName());
+            assertEquals(names[i], list.get(i).getName());
         }
     }
 

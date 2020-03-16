@@ -19,10 +19,10 @@ public class AfferentNode extends PackageNode {
      * and afferent Java package.
      * 
      * @param parent Parent package node.
-     * @param jPackage Afferent Java package.
+     * @param javaPackage Afferent Java package.
      */
-    public AfferentNode(final PackageNode parent, final JavaPackage jPackage) {
-        super(parent, jPackage);
+    public AfferentNode(final PackageNode parent, final JavaPackage javaPackage) {
+        super(parent, javaPackage);
     }
 
     /**
@@ -30,11 +30,11 @@ public class AfferentNode extends PackageNode {
      * parent node and Java package.
      * 
      * @param parent Parent package node.
-     * @param jPackage Java package.
-     * @return A non-null <code>PackageNode</code.
+     * @param javaPackage Java package.
+     * @return A non-null <code>PackageNode</code>.
      */
-    protected PackageNode makeNode(final PackageNode parent, final JavaPackage jPackage) {
-        return new AfferentNode(parent, jPackage);
+    protected PackageNode makeNode(final PackageNode parent, final JavaPackage javaPackage) {
+        return new AfferentNode(parent, javaPackage);
     }
 
     /**

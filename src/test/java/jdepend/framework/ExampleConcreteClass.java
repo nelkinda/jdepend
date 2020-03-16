@@ -1,13 +1,9 @@
 package jdepend.framework;
 
-import java.math.BigDecimal;
-
 import jdepend.framework.p1.ExampleInnerAnnotation;
 import jdepend.framework.p2.ExampleEnum;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runners.Suite.SuiteClasses;
+import java.math.BigDecimal;
 
 /**
  * @author <b>Mike Clark</b>
@@ -22,10 +18,11 @@ public class ExampleConcreteClass extends ExampleAbstractClass {
     public ExampleConcreteClass() {
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     public void a() {
         try {
             java.net.URL url = new java.net.URL("http://www.clarkware.com");
-        } catch (Exception e) {
+        } catch (final Exception ignore) {
         }
     }
 
@@ -34,8 +31,8 @@ public class ExampleConcreteClass extends ExampleAbstractClass {
     }
 
     public void c(BigDecimal bd, byte[] bytes) throws java.rmi.RemoteException {
-        int[] a = { 1, 2, 3};
-        int[][] b = { { 1, 2}, { 3, 4}, { 5, 6}};
+        int[] a = {1, 2, 3};
+        int[][] b = {{1, 2}, {3, 4}, {5, 6}};
     }
 
     public java.io.File[] d() throws java.io.IOException {
@@ -50,13 +47,13 @@ public class ExampleConcreteClass extends ExampleAbstractClass {
 
     @org.junit.Test(expected = javax.crypto.BadPaddingException.class)
     @ExampleAnnotation(
-    		c1 = java.awt.geom.AffineTransform.class,
-    		c2 = java.awt.image.renderable.ContextualRenderedImageFactory.class,
-    		c3 = @ExampleInnerAnnotation({
-    				java.awt.im.InputContext.class,
-    				java.awt.dnd.DragSourceContext.class}),
-    		c4 = ExampleEnum.E1)
-	@org.junit.Ignore
+            c1 = java.awt.geom.AffineTransform.class,
+            c2 = java.awt.image.renderable.ContextualRenderedImageFactory.class,
+            c3 = @ExampleInnerAnnotation({
+                    java.awt.im.InputContext.class,
+                    java.awt.dnd.DragSourceContext.class}),
+            c4 = ExampleEnum.E1)
+    @org.junit.Ignore
     public void f() {
     }
 
@@ -64,5 +61,6 @@ public class ExampleConcreteClass extends ExampleAbstractClass {
     }
 }
 
+@SuppressWarnings("OneTopLevelClass")
 class ExamplePackageClass {
 }
