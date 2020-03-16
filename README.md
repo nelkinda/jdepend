@@ -18,6 +18,7 @@ Contributions are welcome.
 - [ ] Add PMD and fix all PMD issues to improve code quality.
 - [ ] Add SonarLint and fix all SonarLint issues to improve code quality.
 - [ ] Add SonarQube and fix all SonarQube issues to improve code quality.
+- [ ] Update Unit Tests to JUnit 5.
 - [ ] Increase type safety (generics etc)
 - [ ] Remove dependencies on deprecated classes
 - [ ] Use Java Modules
