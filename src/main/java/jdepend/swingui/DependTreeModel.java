@@ -14,9 +14,8 @@ import javax.swing.event.*;
 
 public class DependTreeModel implements TreeModel {
 
-    private PackageNode root;
-
-    private Vector listeners;
+    private final List<TreeModelListener> listeners = new ArrayList<>();
+    private final PackageNode root;
 
     /**
      * Constructs a <code>DependTreeModel</code> with the specified root
@@ -26,7 +25,6 @@ public class DependTreeModel implements TreeModel {
      */
     public DependTreeModel(final PackageNode root) {
         this.root = root;
-        listeners = new Vector();
     }
 
     /**
@@ -51,16 +49,13 @@ public class DependTreeModel implements TreeModel {
      * @return Child.
      */
     public Object getChild(final Object parent, final int index) {
-        Object answer = null;
         if (parent instanceof PackageNode) {
             final List<PackageNode> children = ((PackageNode) parent).getChildren();
-            if (children != null) {
-                if (index < children.size()) {
-                    answer = children.get(index);
-                }
+            if (index < children.size()) {
+                return children.get(index);
             }
         }
-        return answer;
+        return null;
     }
 
     /**
@@ -73,20 +68,8 @@ public class DependTreeModel implements TreeModel {
      * @return The number of children of the specified parent, or 0 if the
      *         parent is a leaf node or if it has no children.
      */
-    public int getChildCount(Object parent) {
-
-        int answer = 0;
-        List<PackageNode> children;
-
-        if (parent instanceof PackageNode) {
-            children = ((PackageNode) parent).getChildren();
-
-            if (children != null) {
-                answer = children.size();
-            }
-        }
-
-        return answer;
+    public int getChildCount(final Object parent) {
+        return parent instanceof PackageNode ? ((PackageNode) parent).getChildren().size() : 0;
     }
 
     /**
@@ -96,16 +79,8 @@ public class DependTreeModel implements TreeModel {
      * @return <code>true</code> if the node is a leaf; <code>false</code>
      *         otherwise.
      */
-    public boolean isLeaf(Object o) {
-
-        boolean answer = true;
-
-        if (o instanceof PackageNode) {
-            PackageNode node = (PackageNode) o;
-            return node.isLeaf();
-        }
-
-        return answer;
+    public boolean isLeaf(final Object o) {
+        return !(o instanceof PackageNode) || ((PackageNode) o).isLeaf();
     }
 
     /**
@@ -127,18 +102,11 @@ public class DependTreeModel implements TreeModel {
      * @return Index of child within parent.
      */
     public int getIndexOfChild(Object parent, Object child) {
-        int answer = -1;
-        List<PackageNode> children = null;
-
         if (parent instanceof PackageNode) {
-            children = ((PackageNode) parent).getChildren();
-
-            if (children != null) {
-                answer = children.indexOf(child);
-            }
+            final List<PackageNode> children = ((PackageNode) parent).getChildren();
+            return children.indexOf(child);
         }
-
-        return answer;
+        return -1;
     }
 
     /**
@@ -147,11 +115,8 @@ public class DependTreeModel implements TreeModel {
      * 
      * @param l The listener to add.
      */
-    public void addTreeModelListener(TreeModelListener l) {
-
-        if ((l != null) && !listeners.contains(l)) {
-            listeners.addElement(l);
-        }
+    public void addTreeModelListener(final TreeModelListener l) {
+        listeners.add(l);
     }
 
     /**
@@ -159,8 +124,8 @@ public class DependTreeModel implements TreeModel {
      * 
      * @param l The listener to remove.
      */
-    public void removeTreeModelListener(TreeModelListener l) {
-        listeners.removeElement(l);
+    public void removeTreeModelListener(final TreeModelListener l) {
+        listeners.remove(l);
     }
 }
 

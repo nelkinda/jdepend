@@ -17,7 +17,7 @@ import jdepend.framework.JavaPackage;
 
 public class DependTree extends JPanel implements TreeSelectionListener {
 
-    private JTree tree;
+    private final JTree tree = createTree(this);
 
     private DependTreeModel model;
 
@@ -35,13 +35,9 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      */
     public DependTree(final DependTreeModel model) {
         setBorder(BorderFactory.createTitledBorder(model.getRoot().toString()));
-
         setModel(model);
-
         setLayout(new BorderLayout());
-
-        JScrollPane pane = createScrollPane();
-
+        final JScrollPane pane = createScrollPane();
         add(pane, "Center");
     }
 
@@ -53,7 +49,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
     public void setModel(final DependTreeModel model) {
         this.model = model;
         setBorder(BorderFactory.createTitledBorder(model.getRoot().toString()));
-        getTree().setModel(this.model);
+        tree.setModel(this.model);
     }
 
     /**
@@ -62,7 +58,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * @return Tree model.
      */
     public DependTreeModel getModel() {
-        return (DependTreeModel) getTree().getModel();
+        return (DependTreeModel) tree.getModel();
     }
 
     /**
@@ -71,7 +67,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * @param l Tree selection listener.
      */
     public void addTreeSelectionListener(final TreeSelectionListener l) {
-        getTree().addTreeSelectionListener(l);
+        tree.addTreeSelectionListener(l);
     }
 
     /**
@@ -94,7 +90,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * @return Scroll pane.
      */
     private JScrollPane createScrollPane() {
-        return new JScrollPane(getTree());
+        return new JScrollPane(tree);
     }
 
     /**
@@ -102,20 +98,13 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * 
      * @return Tree.
      */
-    private JTree createTree() {
+    private static JTree createTree(final TreeSelectionListener treeSelectionListener) {
         final JTree tree = new JTree();
         tree.setShowsRootHandles(false);
         tree.setFont(new Font("Dialog", Font.PLAIN, 12));
-        tree.addTreeSelectionListener(this);
+        tree.addTreeSelectionListener(treeSelectionListener);
         tree.setRootVisible(false);
         tree.setLargeModel(true);
-        return tree;
-    }
-
-    private JTree getTree() {
-        if (tree == null) {
-            tree = createTree();
-        }
         return tree;
     }
 }
