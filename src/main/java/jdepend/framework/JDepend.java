@@ -154,7 +154,7 @@ public class JDepend {
      */
     public void setComponents(final String components) {
         this.components = new ArrayList<>();
-        StringTokenizer st = new StringTokenizer(components, ",");
+        final StringTokenizer st = new StringTokenizer(components, ",");
         while (st.hasMoreTokens()) {
             final String component = st.nextToken();
             this.components.add(component);

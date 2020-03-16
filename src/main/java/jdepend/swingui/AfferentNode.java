@@ -33,6 +33,7 @@ public class AfferentNode extends PackageNode {
      * @param javaPackage Java package.
      * @return A non-null <code>PackageNode</code>.
      */
+    @Override
     protected PackageNode makeNode(final PackageNode parent, final JavaPackage javaPackage) {
         return new AfferentNode(parent, javaPackage);
     }
@@ -43,6 +44,7 @@ public class AfferentNode extends PackageNode {
      * 
      * @return Collection of coupled packages.
      */
+    @Override
     protected Collection<JavaPackage> getCoupledPackages() {
         return getPackage().getAfferents();
     }

@@ -127,7 +127,7 @@ public class JDepend {
         printPackagesFooter();
     }
 
-    protected void printPackage(JavaPackage javaPackage) {
+    protected void printPackage(final JavaPackage javaPackage) {
 
         printPackageHeader(javaPackage);
 
@@ -191,7 +191,7 @@ public class JDepend {
 
         final List<JavaPackage> efferents = new ArrayList<>(javaPackage.getEfferents());
         efferents.sort(JavaPackage.byName);
-        for (JavaPackage efferent : efferents) {
+        for (final JavaPackage efferent : efferents) {
             printPackageName(efferent);
         }
         if (efferents.isEmpty()) {
@@ -235,7 +235,7 @@ public class JDepend {
         }
 
         final JavaPackage cyclePackage = list.get(list.size() - 1);
-        String cyclePackageName = cyclePackage.getName();
+        final String cyclePackageName = cyclePackage.getName();
 
         int i = 0;
         for (final JavaPackage otherPackage : list) {
@@ -290,26 +290,26 @@ public class JDepend {
 
     protected void printStatistics(final JavaPackage javaPackage) {
         getWriter().println("\nStats:");
-        getWriter().println(tab() + "Total Classes: " + javaPackage.getClassCount());
-        getWriter().println(tab() + "Concrete Classes: "
+        getWriter().println(indent() + "Total Classes: " + javaPackage.getClassCount());
+        getWriter().println(indent() + "Concrete Classes: "
                                 + javaPackage.getConcreteClassCount());
-        getWriter().println(tab() + "Abstract Classes: "
+        getWriter().println(indent() + "Abstract Classes: "
                                 + javaPackage.getAbstractClassCount());
         getWriter().println("");
-        getWriter().println(tab() + "Ca: " + javaPackage.afferentCoupling());
-        getWriter().println(tab() + "Ce: " + javaPackage.efferentCoupling());
+        getWriter().println(indent() + "Ca: " + javaPackage.afferentCoupling());
+        getWriter().println(indent() + "Ce: " + javaPackage.efferentCoupling());
         getWriter().println("");
-        getWriter().println(tab() + "A: " + toFormattedString(javaPackage.abstractness()));
-        getWriter().println(tab() + "I: " + toFormattedString(javaPackage.instability()));
-        getWriter().println(tab() + "D: " + toFormattedString(javaPackage.distance()));
+        getWriter().println(indent() + "A: " + toFormattedString(javaPackage.abstractness()));
+        getWriter().println(indent() + "I: " + toFormattedString(javaPackage.instability()));
+        getWriter().println(indent() + "D: " + toFormattedString(javaPackage.distance()));
     }
 
     protected void printClassName(final JavaClass javaClass) {
-        getWriter().println(tab() + javaClass.getClassName());
+        getWriter().println(indent() + javaClass.getClassName());
     }
 
     protected void printPackageName(final JavaPackage javaPackage) {
-        getWriter().println(tab() + javaPackage.getName());
+        getWriter().println(indent() + javaPackage.getName());
     }
 
     protected void printAbstractClassesHeader() {
@@ -337,7 +337,7 @@ public class JDepend {
     }
 
     protected void printEfferentsError() {
-        getWriter().println(tab() + "Not dependent on any packages.");
+        getWriter().println(indent() + "Not dependent on any packages.");
     }
 
     protected void printAfferentsHeader() {
@@ -349,7 +349,7 @@ public class JDepend {
     }
 
     protected void printAfferentsError() {
-        getWriter().println(tab() + "Not used by any packages.");
+        getWriter().println(indent() + "Not used by any packages.");
     }
 
     protected void printCyclesHeader() {
@@ -367,15 +367,15 @@ public class JDepend {
 
     protected void printCycleHeader(final JavaPackage javaPackage) {
         getWriter().println(javaPackage.getName());
-        getWriter().println(tab() + "|");
+        getWriter().println(indent() + "|");
     }
 
     protected void printCycleTarget(final JavaPackage javaPackage) {
-        getWriter().println(tab() + "|-> " + javaPackage.getName());
+        getWriter().println(indent() + "|-> " + javaPackage.getName());
     }
 
     protected void printCycleContributor(final JavaPackage javaPackage) {
-        getWriter().println(tab() + "|   " + javaPackage.getName());
+        getWriter().println(indent() + "|   " + javaPackage.getName());
     }
 
     protected void printCycleFooter() {
@@ -410,21 +410,21 @@ public class JDepend {
         getWriter().println("");
     }
 
-    protected String toFormattedString(final float f) {
-        return formatter.format(f);
+    protected String toFormattedString(final float number) {
+        return formatter.format(number);
     }
 
-    protected String tab() {
+    protected String indent() {
         return "    ";
     }
 
-    protected String tab(final int n) {
-        final StringBuilder s = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            s.append(tab());
+    protected String indent(final int indentationLevel) {
+        final StringBuilder indentation = new StringBuilder();
+        for (int i = 0; i < indentationLevel; i++) {
+            indentation.append(indent());
         }
 
-        return s.toString();
+        return indentation.toString();
     }
 
     protected void usage(final String message) {

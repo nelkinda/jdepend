@@ -41,7 +41,7 @@ public class PropertyConfigurator {
      * 
      * @param p Property set.
      */
-    public PropertyConfigurator(Properties p) {
+    public PropertyConfigurator(final Properties p) {
         this.properties = p;
     }
 
@@ -51,7 +51,7 @@ public class PropertyConfigurator {
      * 
      * @param f Property file.
      */
-    public PropertyConfigurator(File f) {
+    public PropertyConfigurator(final File f) {
         this(loadProperties(f));
     }
 
@@ -80,10 +80,9 @@ public class PropertyConfigurator {
         final Enumeration<String> e = (Enumeration<String>) properties.propertyNames();
         while (e.hasMoreElements()) {
             final String key = e.nextElement();
-            if (!key.startsWith("ignore")
-                    && (!key.equals("analyzeInnerClasses"))) {
-                String v = properties.getProperty(key);
-                packages.add(new JavaPackage(key, new Integer(v)));
+            if (!key.startsWith("ignore") && !key.equals("analyzeInnerClasses")) {
+                final String v = properties.getProperty(key);
+                packages.add(new JavaPackage(key, Integer.valueOf(v)));
             }
         }
 
@@ -94,7 +93,7 @@ public class PropertyConfigurator {
         final String key = "analyzeInnerClasses";
         if (properties.containsKey(key)) {
             final String value = properties.getProperty(key);
-            return new Boolean(value);
+            return Boolean.valueOf(value);
         }
         return true;
     }
@@ -105,7 +104,7 @@ public class PropertyConfigurator {
     }
 
     @SuppressWarnings("EmptyCatchBlock")
-    public static Properties loadProperties(File file) {
+    public static Properties loadProperties(final File file) {
         final Properties p = new Properties();
         InputStream is = null;
 

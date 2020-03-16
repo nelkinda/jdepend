@@ -19,8 +19,6 @@ public class DependTree extends JPanel implements TreeSelectionListener {
 
     private final JTree tree = createTree(this);
 
-    private DependTreeModel model;
-
     /**
      * Constructs a <code>DependTree</code> with an empty tree model.
      */
@@ -47,9 +45,8 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * @param model Tree model.
      */
     public void setModel(final DependTreeModel model) {
-        this.model = model;
         setBorder(BorderFactory.createTitledBorder(model.getRoot().toString()));
-        tree.setModel(this.model);
+        tree.setModel(model);
     }
 
     /**
@@ -76,6 +73,7 @@ public class DependTree extends JPanel implements TreeSelectionListener {
      * 
      * @param te Event that characterizes the change.
      */
+    @Override
     public void valueChanged(final TreeSelectionEvent te) {
         final TreePath path = te.getNewLeadSelectionPath();
 

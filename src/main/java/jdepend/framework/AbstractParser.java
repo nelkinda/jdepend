@@ -22,7 +22,7 @@ public abstract class AbstractParser {
     }
 
     public AbstractParser(final PackageFilter filter) {
-        setFilter(filter);
+        this.filter = filter;
     }
 
     public void addParseListener(final ParserListener listener) {

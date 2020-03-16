@@ -33,6 +33,7 @@ public class DependTreeModel implements TreeModel {
      * @return The root of the tree, or <code>null</code> if the tree has no
      *         nodes.
      */
+    @Override
     public Object getRoot() {
         return root;
     }
@@ -48,6 +49,7 @@ public class DependTreeModel implements TreeModel {
      * @param index Index of child in the parent's child collection.
      * @return Child.
      */
+    @Override
     public Object getChild(final Object parent, final int index) {
         if (parent instanceof PackageNode) {
             final List<PackageNode> children = ((PackageNode) parent).getChildren();
@@ -68,6 +70,7 @@ public class DependTreeModel implements TreeModel {
      * @return The number of children of the specified parent, or 0 if the
      *         parent is a leaf node or if it has no children.
      */
+    @Override
     public int getChildCount(final Object parent) {
         return parent instanceof PackageNode ? ((PackageNode) parent).getChildren().size() : 0;
     }
@@ -79,6 +82,7 @@ public class DependTreeModel implements TreeModel {
      * @return <code>true</code> if the node is a leaf; <code>false</code>
      *         otherwise.
      */
+    @Override
     public boolean isLeaf(final Object o) {
         return !(o instanceof PackageNode) || ((PackageNode) o).isLeaf();
     }
@@ -90,7 +94,8 @@ public class DependTreeModel implements TreeModel {
      * @param path Path to the node that has changed.
      * @param newValue The new value of the node.
      */
-    public void valueForPathChanged(TreePath path, Object newValue) {
+    @Override
+    public void valueForPathChanged(final TreePath path, final Object newValue) {
         // do nothing
     }
 
@@ -101,7 +106,8 @@ public class DependTreeModel implements TreeModel {
      * @param child Child node.
      * @return Index of child within parent.
      */
-    public int getIndexOfChild(Object parent, Object child) {
+    @Override
+    public int getIndexOfChild(final Object parent, final Object child) {
         if (parent instanceof PackageNode) {
             final List<PackageNode> children = ((PackageNode) parent).getChildren();
             return children.indexOf(child);
@@ -115,6 +121,7 @@ public class DependTreeModel implements TreeModel {
      * 
      * @param l The listener to add.
      */
+    @Override
     public void addTreeModelListener(final TreeModelListener l) {
         listeners.add(l);
     }
@@ -124,6 +131,7 @@ public class DependTreeModel implements TreeModel {
      * 
      * @param l The listener to remove.
      */
+    @Override
     public void removeTreeModelListener(final TreeModelListener l) {
         listeners.remove(l);
     }

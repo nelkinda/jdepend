@@ -262,6 +262,7 @@ public class JDepend implements ParserListener {
      *
      * @param javaClass Parsed Java class.
      */
+    @Override
     public void onParsedJavaClass(final JavaClass javaClass) {
         invokeLater(() -> progressBar.setValue(progressBar.getValue() + 1));
     }
@@ -327,7 +328,7 @@ public class JDepend implements ParserListener {
         invokeLater(() -> showStatusError(message));
     }
 
-    private void usage(String message) {
+    private void usage(final String message) {
         if (message != null) {
             System.err.println("\n" + message);
         }
@@ -391,11 +392,12 @@ public class JDepend implements ParserListener {
          *
          * @param te Event that characterizes the change.
          */
-        public void valueChanged(TreeSelectionEvent te) {
+        @Override
+        public void valueChanged(final TreeSelectionEvent te) {
             final TreePath path = te.getNewLeadSelectionPath();
 
             if (path != null) {
-                PackageNode node = (PackageNode) path.getLastPathComponent();
+                final PackageNode node = (PackageNode) path.getLastPathComponent();
                 showStatusMessage(node.toMetricsString());
             }
         }
@@ -406,6 +408,7 @@ public class JDepend implements ParserListener {
             super("About");
         }
 
+        @Override
         public void actionPerformed(final ActionEvent e) {
             showMessageDialog(
                     frame,
@@ -431,6 +434,7 @@ public class JDepend implements ParserListener {
         /**
          * Handles the action.
          */
+        @Override
         public void actionPerformed(final ActionEvent e) {
             frame.dispose();
             System.exit(0);

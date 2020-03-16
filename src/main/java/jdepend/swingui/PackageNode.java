@@ -135,14 +135,14 @@ public abstract class PackageNode {
         final StringBuilder label = new StringBuilder();
         label.append(getPackage().getName());
         label.append("  (");
-        label.append("CC: " + getPackage().getConcreteClassCount() + "  ");
-        label.append("AC: " + getPackage().getAbstractClassCount() + "  ");
-        label.append("Ca: " + getPackage().afferentCoupling() + "  ");
-        label.append("Ce: " + getPackage().efferentCoupling() + "  ");
-        label.append("A: " + format(getPackage().abstractness()) + "  ");
-        label.append("I: " + format(getPackage().instability()) + "  ");
-        label.append("D: " + format(getPackage().distance()) + "  ");
-        label.append("V: " + getPackage().getVolatility());
+        label.append("CC: ").append(getPackage().getConcreteClassCount()).append("  ");
+        label.append("AC: ").append(getPackage().getAbstractClassCount()).append("  ");
+        label.append("Ca: ").append(getPackage().afferentCoupling()).append("  ");
+        label.append("Ce: ").append(getPackage().efferentCoupling()).append("  ");
+        label.append("A: ").append(format(getPackage().abstractness())).append("  ");
+        label.append("I: ").append(format(getPackage().instability())).append("  ");
+        label.append("D: ").append(format(getPackage().distance())).append("  ");
+        label.append("V: ").append(getPackage().getVolatility());
         if (getPackage().containsCycle()) {
             label.append(" Cyclic");
         }
@@ -158,6 +158,7 @@ public abstract class PackageNode {
      *
      * @return Node label.
      */
+    @Override
     public String toString() {
         if (getParent().getParent() == null) {
             return toMetricsString();

@@ -32,6 +32,7 @@ public class JavaClassBuilder {
 
     public int countClasses() {
         final AbstractParser counter = new AbstractParser() {
+            @Override
             public JavaClass parse(final InputStream inputStream) {
                 return new JavaClass("");
             }
@@ -69,17 +70,15 @@ public class JavaClassBuilder {
     public Collection<JavaClass> buildClasses(final File file) throws IOException {
         if (fileManager.acceptClassFile(file)) {
             try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
-                JavaClass parsedClass = parser.parse(is);
+                final JavaClass parsedClass = parser.parse(is);
                 return Collections.singleton(parsedClass);
             }
         } else if (fileManager.acceptJarFile(file)) {
-            try (final JarFile jarFile = new JarFile(file)) {
+            try (JarFile jarFile = new JarFile(file)) {
                 return buildClasses(jarFile);
             }
         } else {
-            throw new IOException("File is not a valid "
-                    + ".class, .jar, .war, or .zip file: "
-                    + file.getPath());
+            throw new IOException("File is not a valid " + ".class, .jar, .war, or .zip file: " + file.getPath());
         }
     }
 

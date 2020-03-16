@@ -48,7 +48,7 @@ public class PackageFilter {
      * 
      * @param packageNames Package names to filter.
      */
-    public PackageFilter(Collection<String> packageNames) {
+    public PackageFilter(final Collection<String> packageNames) {
         filtered = new ArrayList<>();
         addPackages(packageNames);
     }

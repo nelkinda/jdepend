@@ -73,6 +73,7 @@ public class JavaClass {
         this.isAbstract = isAbstract;
     }
 
+    @Override
     public boolean equals(final Object other) {
         if (other instanceof JavaClass) {
             final JavaClass otherClass = (JavaClass) other;
@@ -82,6 +83,7 @@ public class JavaClass {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return getClassName().hashCode();
     }

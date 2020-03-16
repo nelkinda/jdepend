@@ -1,6 +1,7 @@
 package jdepend.framework;
 
 import java.io.*;
+import java.nio.file.Files;
 
 /**
  * The <code>ClassFileParser</code> class is responsible for
@@ -130,7 +131,7 @@ public class ClassFileParser extends AbstractParser {
 
         Logger.debug("\nParsing " + fileName + "...");
 
-        try (InputStream in = new BufferedInputStream(new FileInputStream(classFile))) {
+        try (InputStream in = new BufferedInputStream(Files.newInputStream(classFile.toPath()))) {
             return parse(in);
         }
     }
@@ -142,6 +143,7 @@ public class ClassFileParser extends AbstractParser {
      * @return {@code JavaClass} from parsing {@code inputStream}.
      * @throws IOException in case of I/O problems parsing the {@link InputStream}.
      */
+    @Override
     public JavaClass parse(final InputStream inputStream) throws IOException {
         reset();
 
@@ -149,10 +151,10 @@ public class ClassFileParser extends AbstractParser {
 
         in = new DataInputStream(inputStream);
 
-        int magic = parseMagic();
+        final int magic = parseMagic();
 
-        int minorVersion = parseMinorVersion();
-        int majorVersion = parseMajorVersion();
+        final int minorVersion = parseMinorVersion();
+        final int majorVersion = parseMajorVersion();
 
         constantPool = parseConstantPool();
 
@@ -180,7 +182,7 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private int parseMagic() throws IOException {
-        int magic = in.readInt();
+        final int magic = in.readInt();
         if (magic != JAVA_MAGIC) {
             throw new IOException("Invalid class file: " + fileName);
         }
@@ -217,10 +219,10 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private void parseAccessFlags() throws IOException {
-        int accessFlags = in.readUnsignedShort();
+        final int accessFlags = in.readUnsignedShort();
 
-        boolean isAbstractClass = ((accessFlags & ACC_ABSTRACT) != 0);
-        boolean isInterface = ((accessFlags & ACC_INTERFACE) != 0);
+        final boolean isAbstractClass = (accessFlags & ACC_ABSTRACT) != 0;
+        final boolean isInterface = (accessFlags & ACC_INTERFACE) != 0;
 
         this.isAbstract = isAbstractClass || isInterface;
         javaClass.isAbstract(this.isAbstract);
@@ -403,7 +405,7 @@ public class ClassFileParser extends AbstractParser {
     private void addClassConstantReferences() throws IOException {
         for (int j = 1; j < constantPool.length; j += getEntrySize(constantPool[j])) {
             if (constantPool[j].getTag() == CONSTANT_CLASS) {
-                String name = toUtf8(constantPool[j].getNameIndex());
+                final String name = toUtf8(constantPool[j].getNameIndex());
                 addImport(getPackageName(name));
 
                 Logger.debug("Parser: class type = " + slashesToDots(name));
@@ -412,16 +414,28 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private void addAnnotationsReferences() throws IOException {
+        addAttributeAnnotationReferences();
+        addFieldAnnotationReferences();
+        addMethodAnnotationReferences();
+    }
+
+    private void addAttributeAnnotationReferences() throws IOException {
         for (int j = 1; j < attributes.length; j++) {
             if ("RuntimeVisibleAnnotations".equals(attributes[j].name)) {
                 addAnnotationReferences(attributes[j]);
             }
         }
+    }
+
+    private void addFieldAnnotationReferences() throws IOException {
         for (int j = 1; j < fields.length; j++) {
             if (fields[j].runtimeVisibleAnnotations != null) {
                 addAnnotationReferences(fields[j].runtimeVisibleAnnotations);
             }
         }
+    }
+
+    private void addMethodAnnotationReferences() throws IOException {
         for (int j = 1; j < methods.length; j++) {
             if (methods[j].runtimeVisibleAnnotations != null) {
                 addAnnotationReferences(methods[j].runtimeVisibleAnnotations);
@@ -458,26 +472,18 @@ public class ClassFileParser extends AbstractParser {
         final byte tag = data[index];
         index += 1;
         switch (tag) {
-        case 'B':
-        case 'C':
-        case 'D':
-        case 'F':
-        case 'I':
-        case 'J':
-        case 'S':
-        case 'Z':
-        case 's':
+        case 'B': case 'C': case 'D': case 'F': case 'I': case 'J': case 'S': case 'Z': case 's':
             index += 2;
             break;
 
         case 'e':
-            int enumTypeIndex = u2(data, index);
+            final int enumTypeIndex = u2(data, index);
             addImport(getPackageName(toUtf8(enumTypeIndex).substring(1)));
             index += 4;
             break;
 
         case 'c':
-            int classInfoIndex = u2(data, index);
+            final int classInfoIndex = u2(data, index);
             addImport(getPackageName(toUtf8(classInfoIndex).substring(1)));
             index += 2;
             break;
@@ -487,7 +493,7 @@ public class ClassFileParser extends AbstractParser {
             break;
 
         case '[':
-            int numValues = u2(data, index);
+            final int numValues = u2(data, index);
             index = index + 2;
             for (int i = 0; i < numValues; i++) {
                 index = addAnnotationElementValueReferences(data, index);
@@ -500,7 +506,7 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private int u2(final byte[] data, final int index) {
-        return (data[index] << 8 & 0xFF00) | (data[index + 1] & 0xFF);
+        return data[index] << 8 & 0xFF00 | data[index + 1] & 0xFF;
     }
 
     private String getClassConstantName(final int entryIndex) throws IOException {
@@ -520,7 +526,7 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private void addImport(final String importPackage) {
-        if ((importPackage != null) && (getFilter().accept(importPackage))) {
+        if (importPackage != null && getFilter().accept(importPackage)) {
             javaClass.addImportedPackage(new JavaPackage(importPackage));
         }
     }
@@ -530,7 +536,7 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private String getPackageName(String s) {
-        if ((s.length() > 0) && (s.charAt(0) == '[')) {
+        if (s.length() > 0 && s.charAt(0) == '[') {
             final String[] types = descriptorToTypes(s);
             if (types.length == 0) {
                 return null; // primitives
@@ -561,7 +567,7 @@ public class ClassFileParser extends AbstractParser {
 
             s.append("\nConstants:\n");
             for (int i = 1; i < constantPool.length; i++) {
-                Constant entry = getConstantPoolEntry(i);
+                final Constant entry = getConstantPoolEntry(i);
                 s.append("    ").append(i).append(". ").append(entry.toString()).append("\n");
                 if (isDoubleSizeEntry(entry)) {
                     i++;
@@ -636,6 +642,7 @@ public class ClassFileParser extends AbstractParser {
             return value;
         }
 
+        @Override
         public String toString() {
             final StringBuilder s = new StringBuilder();
             s.append("tag: ").append(getTag());
@@ -676,7 +683,7 @@ public class ClassFileParser extends AbstractParser {
         private final int descriptorIndex;
         private AttributeInfo runtimeVisibleAnnotations;
 
-        FieldOrMethodInfo(int accessFlags, int nameIndex, int descriptorIndex) {
+        FieldOrMethodInfo(final int accessFlags, final int nameIndex, final int descriptorIndex) {
             this.accessFlags = accessFlags;
             this.nameIndex = nameIndex;
             this.descriptorIndex = descriptorIndex;
@@ -694,6 +701,7 @@ public class ClassFileParser extends AbstractParser {
             return descriptorIndex;
         }
 
+        @Override
         public String toString() {
             final StringBuilder s = new StringBuilder();
             try {

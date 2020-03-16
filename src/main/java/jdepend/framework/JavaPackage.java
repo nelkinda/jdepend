@@ -114,7 +114,7 @@ public class JavaPackage {
         return false;
     }
 
-    public void addClass(JavaClass clazz) {
+    public void addClass(final JavaClass clazz) {
         classes.add(clazz);
     }
 
@@ -212,12 +212,10 @@ public class JavaPackage {
      * @return Instability (0-1).
      */
     public float instability() {
-        float totalCoupling = (float) efferentCoupling() + (float) afferentCoupling();
-
+        final float totalCoupling = (float) efferentCoupling() + (float) afferentCoupling();
         if (totalCoupling > 0) {
             return efferentCoupling() / totalCoupling;
         }
-
         return 0;
     }
 
@@ -236,14 +234,14 @@ public class JavaPackage {
      * @return The package's distance from the main sequence (D).
      */
     public float distance() {
-        float d = Math.abs(abstractness() + instability() - 1);
+        final float d = Math.abs(abstractness() + instability() - 1);
         return d * volatility;
     }
 
     @Override
     public boolean equals(final Object other) {
         if (other instanceof JavaPackage) {
-            JavaPackage otherPackage = (JavaPackage) other;
+            final JavaPackage otherPackage = (JavaPackage) other;
             return otherPackage.name.equals(name);
         }
         return false;
