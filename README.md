@@ -13,7 +13,11 @@ Contributions are welcome.
 ## Status/Plan
 - [x] Fix compilation issues with JDK9 and newer
 - [x] Import project into Gradle
-- [ ] Get all unit tests to pass
+- [x] Get most unit tests to pass
+- [x] Add Checkstyle and fix all Checkstyle issues to improve code quality.
+- [ ] Add PMD and fix all PMD issues to improve code quality.
+- [ ] Add SonarLint and fix all SonarLint issues to improve code quality.
+- [ ] Add SonarQube and fix all SonarQube issues to improve code quality.
 - [ ] Increase type safety (generics etc)
 - [ ] Remove dependencies on deprecated classes
 - [ ] Use Java Modules
