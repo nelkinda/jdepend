@@ -19,8 +19,6 @@ public class ClassFileParser extends AbstractParser {
     public static final int JAVA_MAGIC = 0xCAFEBABE;
 
     public static final char CLASS_DESCRIPTOR = 'L';
-    public static final int ACC_INTERFACE = 0x200;
-    public static final int ACC_ABSTRACT = 0x400;
 
     private String fileName;
     private String className;
@@ -208,8 +206,8 @@ public class ClassFileParser extends AbstractParser {
     private void parseAccessFlags() throws IOException {
         final int accessFlags = in.readUnsignedShort();
 
-        final boolean isAbstractClass = (accessFlags & ACC_ABSTRACT) != 0;
-        final boolean isInterface = (accessFlags & ACC_INTERFACE) != 0;
+        final boolean isAbstractClass = (accessFlags & AccessModifiers.ACC_ABSTRACT) != 0;
+        final boolean isInterface = (accessFlags & AccessModifiers.ACC_INTERFACE) != 0;
 
         this.isAbstract = isAbstractClass || isInterface;
         javaClass.isAbstract(this.isAbstract);
