@@ -3,6 +3,8 @@ package jdepend.framework;
 import java.io.*;
 import java.nio.file.Files;
 
+import static jdepend.framework.ConstantPoolTags.*;
+
 /**
  * The <code>ClassFileParser</code> class is responsible for
  * parsing a Java class file to create a <code>JavaClass</code>
@@ -15,21 +17,6 @@ import java.nio.file.Files;
 public class ClassFileParser extends AbstractParser {
 
     public static final int JAVA_MAGIC = 0xCAFEBABE;
-    public static final int CONSTANT_UTF8 = 1;
-    public static final int CONSTANT_UNICODE = 2;
-    public static final int CONSTANT_INTEGER = 3;
-    public static final int CONSTANT_FLOAT = 4;
-    public static final int CONSTANT_LONG = 5;
-    public static final int CONSTANT_DOUBLE = 6;
-    public static final int CONSTANT_CLASS = 7;
-    public static final int CONSTANT_STRING = 8;
-    public static final int CONSTANT_FIELD = 9;
-    public static final int CONSTANT_METHOD = 10;
-    public static final int CONSTANT_INTERFACEMETHOD = 11;
-    public static final int CONSTANT_NAMEANDTYPE = 12;
-    public static final int CONSTANT_METHOD_HANDLE = 15;
-    public static final int CONSTANT_METHOD_TYPE = 16;
-    public static final int CONSTANT_INVOKEDYNAMIC = 18;
 
     public static final char CLASS_DESCRIPTOR = 'L';
     public static final int ACC_INTERFACE = 0x200;
@@ -302,48 +289,34 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private Constant parseNextConstant() throws IOException {
-        Constant result;
-
         final byte tag = in.readByte();
 
         switch (tag) {
-
-        case ClassFileParser.CONSTANT_CLASS:
-        case ClassFileParser.CONSTANT_STRING:
-        case ClassFileParser.CONSTANT_METHOD_TYPE:
-            result = new Constant(tag, in.readUnsignedShort());
-            break;
-        case ClassFileParser.CONSTANT_FIELD:
-        case ClassFileParser.CONSTANT_METHOD:
-        case ClassFileParser.CONSTANT_INTERFACEMETHOD:
-        case ClassFileParser.CONSTANT_NAMEANDTYPE:
-        case ClassFileParser.CONSTANT_INVOKEDYNAMIC:
-            result = new Constant(tag, in.readUnsignedShort(), in
-                    .readUnsignedShort());
-            break;
-        case ClassFileParser.CONSTANT_INTEGER:
-            result = new Constant(tag, (Object) in.readInt());
-            break;
-        case ClassFileParser.CONSTANT_FLOAT:
-            result = new Constant(tag, in.readFloat());
-            break;
-        case ClassFileParser.CONSTANT_LONG:
-            result = new Constant(tag, in.readLong());
-            break;
-        case ClassFileParser.CONSTANT_DOUBLE:
-            result = new Constant(tag, in.readDouble());
-            break;
-        case ClassFileParser.CONSTANT_UTF8:
-            result = new Constant(tag, in.readUTF());
-            break;
-        case ClassFileParser.CONSTANT_METHOD_HANDLE:
-            result = new Constant(tag, in.readByte(), in.readUnsignedShort());
-            break;
+        case CONSTANT_CLASS:
+        case CONSTANT_STRING:
+        case CONSTANT_METHOD_TYPE:
+            return new Constant(tag, in.readUnsignedShort());
+        case CONSTANT_FIELD:
+        case CONSTANT_METHOD:
+        case CONSTANT_INTERFACEMETHOD:
+        case CONSTANT_NAMEANDTYPE:
+        case CONSTANT_INVOKEDYNAMIC:
+            return new Constant(tag, in.readUnsignedShort(), in.readUnsignedShort());
+        case CONSTANT_INTEGER:
+            return new Constant(tag, (Object) in.readInt());
+        case CONSTANT_FLOAT:
+            return new Constant(tag, in.readFloat());
+        case CONSTANT_LONG:
+            return new Constant(tag, in.readLong());
+        case CONSTANT_DOUBLE:
+            return new Constant(tag, in.readDouble());
+        case CONSTANT_UTF8:
+            return new Constant(tag, in.readUTF());
+        case CONSTANT_METHOD_HANDLE:
+            return new Constant(tag, in.readByte(), in.readUnsignedShort());
         default:
             throw new IOException("Unknown constant: " + tag);
         }
-
-        return result;
     }
 
     private FieldOrMethodInfo parseFieldOrMethodInfo() throws IOException {
