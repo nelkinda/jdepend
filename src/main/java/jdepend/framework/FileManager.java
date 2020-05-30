@@ -56,7 +56,7 @@ public class FileManager {
     }
 
     public boolean acceptJarFile(final File file) {
-        return isJar(file) || isZip(file) || isWar(file);
+        return isEar(file) || isJar(file) || isZip(file) || isWar(file);
     }
 
     public Collection<File> extractFiles() {
@@ -88,6 +88,10 @@ public class FileManager {
         if (!files.contains(f)) {
             files.add(f);
         }
+    }
+
+    private boolean isEar(final File file) {
+        return existsWithExtension(file, ".ear");
     }
 
     private boolean isWar(final File file) {

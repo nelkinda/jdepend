@@ -65,6 +65,10 @@ public class FileManagerTest extends JDependTestCase {
         assertFalse(new FileManager().acceptClassFile(f));
     }
 
+    public void testEar() throws IOException {
+        testZip(".ear");
+    }
+
     public void testJar() throws IOException {
         testZip(".jar");
     }
