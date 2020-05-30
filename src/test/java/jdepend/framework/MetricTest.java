@@ -32,10 +32,6 @@ public class MetricTest extends JDependTestCase {
         jdepend.analyzeInnerClasses(false);
     }
 
-    protected void tearDown() {
-        super.tearDown();
-    }
-
     public void ignoredTestAnalyzeClassFiles() throws IOException {
         jdepend.addDirectory(getJavaTestDir());
         jdepend.addDirectory(getJavaMainDir());

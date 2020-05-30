@@ -3,7 +3,6 @@ package jdepend.framework;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -70,8 +69,7 @@ public class ExampleTest extends TestCase {
 
         JavaPackage p = jdepend.getPackage("jdepend.framework");
 
-        assertEquals("Cycles exist: " + p.getName(), 
-                     false, p.containsCycle());
+        assertFalse("Cycles exist: " + p.getName(), p.containsCycle());
     }
 
     /**
@@ -83,12 +81,10 @@ public class ExampleTest extends TestCase {
         double ideal = 0.0;
         double tolerance = 1.0;
 
-        Collection packages = jdepend.analyze();
+        Collection<JavaPackage> packages = jdepend.analyze();
 
-        for (Iterator iter = packages.iterator(); iter.hasNext();) {
-            JavaPackage p = (JavaPackage)iter.next();
-            assertEquals("Distance exceeded: " + p.getName(), 
-                         ideal, p.distance(), tolerance);
+        for (final JavaPackage p : packages) {
+            assertEquals("Distance exceeded: " + p.getName(), ideal, p.distance(), tolerance);
         }
     }
 
@@ -96,11 +92,11 @@ public class ExampleTest extends TestCase {
      * Tests that a package dependency cycle does not exist 
      * for any of the analyzed packages.
      */
-    public void testAllPackagesHaveNoCycles() {
+    public void ignoredTestAllPackagesHaveNoCycles() {
 
         Collection packages = jdepend.analyze();
 
-        // assertEquals("Cycles exist", false, jdepend.containsCycles());
+        assertFalse("Cycles exist", jdepend.containsCycles());
     }
 
     /**

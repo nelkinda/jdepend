@@ -31,10 +31,6 @@ public class ComponentTest extends JDependTestCase {
         jdepend.analyzeInnerClasses(false);
     }
 
-    protected void tearDown() {
-        super.tearDown();
-    }
-
     public void testJDependComponents() throws IOException {
 
         jdepend.setComponents("jdepend,junit,java,javax");
@@ -67,14 +63,14 @@ public class ComponentTest extends JDependTestCase {
                 () -> assertEquals(1, p.getVolatility())
         );
 
-        Collection efferents = p.getEfferents();
+        Collection<JavaPackage> efferents = p.getEfferents();
         assertEquals(5, efferents.size());
         System.err.println(efferents);
         assertTrue(efferents.contains(new JavaPackage("java")));
         assertTrue(efferents.contains(new JavaPackage("javax")));
         assertTrue(efferents.contains(new JavaPackage("junit")));
 
-        Collection afferents = p.getAfferents();
+        Collection<JavaPackage> afferents = p.getAfferents();
         assertEquals(0, afferents.size());
     }
 
@@ -82,11 +78,11 @@ public class ComponentTest extends JDependTestCase {
         JavaPackage p = jdepend.getPackage("junit");
         assertEquals("junit", p.getName());
 
-        Collection afferents = p.getAfferents();
+        Collection<JavaPackage> afferents = p.getAfferents();
         assertEquals(1, afferents.size());
         assertTrue(afferents.contains(new JavaPackage("jdepend")));
 
-        Collection efferents = p.getEfferents();
+        Collection<JavaPackage> efferents = p.getEfferents();
         assertEquals(0, efferents.size());
     }
 
@@ -94,11 +90,11 @@ public class ComponentTest extends JDependTestCase {
         JavaPackage p = jdepend.getPackage("java");
         assertEquals("java", p.getName());
 
-        Collection afferents = p.getAfferents();
+        Collection<JavaPackage> afferents = p.getAfferents();
         assertEquals(1, afferents.size());
         assertTrue(afferents.contains(new JavaPackage("jdepend")));
 
-        Collection efferents = p.getEfferents();
+        Collection<JavaPackage> efferents = p.getEfferents();
         assertEquals(0, efferents.size());
     }
 
@@ -106,11 +102,11 @@ public class ComponentTest extends JDependTestCase {
         JavaPackage p = jdepend.getPackage("javax");
         assertEquals("javax", p.getName());
 
-        Collection afferents = p.getAfferents();
+        Collection<JavaPackage> afferents = p.getAfferents();
         assertEquals(1, afferents.size());
         assertTrue(afferents.contains(new JavaPackage("jdepend")));
 
-        Collection efferents = p.getEfferents();
+        Collection<JavaPackage> efferents = p.getEfferents();
         assertEquals(0, efferents.size());
     }
 

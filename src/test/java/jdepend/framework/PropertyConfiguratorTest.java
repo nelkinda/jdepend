@@ -1,7 +1,6 @@
 package jdepend.framework;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -20,10 +19,6 @@ public class PropertyConfiguratorTest extends JDependTestCase {
         System.setProperty("user.home", getTestDataDir());
     }
 
-    protected void tearDown() {
-        super.tearDown();
-    }
-
     public void testDefaultFilters() {
         PropertyConfigurator c = new PropertyConfigurator();
         assertFiltersExist(c.getFilteredPackages());
@@ -31,7 +26,6 @@ public class PropertyConfiguratorTest extends JDependTestCase {
     }
 
     public void testFiltersFromFile() {
-
         String file = getTestDataDir() + "jdepend.properties";
 
         PropertyConfigurator c = new PropertyConfigurator(new File(file));
@@ -40,7 +34,7 @@ public class PropertyConfiguratorTest extends JDependTestCase {
         assertFalse(c.getAnalyzeInnerClasses());
     }
 
-    private void assertFiltersExist(Collection filters) {
+    private void assertFiltersExist(Collection<String> filters) {
         assertEquals(5, filters.size());
         assertTrue(filters.contains("java.*"));
         assertTrue(filters.contains("javax.*"));
