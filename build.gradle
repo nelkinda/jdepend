@@ -56,7 +56,6 @@ test {
 }
 
 wrapper {
-    gradleVersion "6.2.2"
-    jarFile ".gradle/wrapper/gradle-wrapper.jar"
+    gradleVersion "6.4.1"
     distributionType = Wrapper.DistributionType.ALL
 }
