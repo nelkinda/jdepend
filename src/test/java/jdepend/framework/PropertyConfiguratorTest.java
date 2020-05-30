@@ -30,7 +30,7 @@ public class PropertyConfiguratorTest extends JDependTestCase {
         assertFalse(c.getAnalyzeInnerClasses());
     }
 
-    public void testFiltersFromFile() throws IOException {
+    public void testFiltersFromFile() {
 
         String file = getTestDataDir() + "jdepend.properties";
 
@@ -49,7 +49,7 @@ public class PropertyConfiguratorTest extends JDependTestCase {
         assertTrue(filters.contains("com.xyz.tests.*"));
     }
 
-    public void testDefaultPackages() throws IOException {
+    public void testDefaultPackages() {
         JDepend j = new JDepend();
 
         JavaPackage pkg = j.getPackage("com.xyz.a.neverchanges");

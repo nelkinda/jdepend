@@ -1,7 +1,6 @@
 package jdepend.framework;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -177,18 +176,6 @@ public class CycleTest extends JDependTestCase {
         assertEquals(names.length, list.size());
         for (int i = 0; i < names.length; i++) {
             assertEquals(names[i], list.get(i).getName());
-        }
-    }
-
-    protected void printCycles(List list) {
-        Iterator i = list.iterator();
-        while (i.hasNext()) {
-            JavaPackage p = (JavaPackage) i.next();
-            if (i.hasNext()) {
-                System.out.print(p.getName() + "->");
-            } else {
-                System.out.println(p.getName());
-            }
         }
     }
 }

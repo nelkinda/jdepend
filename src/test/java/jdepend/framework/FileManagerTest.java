@@ -3,6 +3,8 @@ package jdepend.framework;
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
@@ -21,10 +23,6 @@ public class FileManagerTest extends JDependTestCase {
         fileManager.acceptInnerClasses(false);
     }
 
-    protected void tearDown() {
-        super.tearDown();
-    }
-
     public void testEmptyFileManager() {
         assertEquals(0, fileManager.extractFiles().size());
     }
@@ -36,25 +34,23 @@ public class FileManagerTest extends JDependTestCase {
     }
 
     public void testNonExistentDirectory() {
-        try {
-            fileManager.addDirectory(getJavaTestDir() + "junk");
-            fail("Non-existent directory: Should raise IOException");
-        } catch (final IOException expected) {
-            assertTrue(true);
-        }
+        assertThrows(
+                IOException.class,
+                () -> fileManager.addDirectory(getJavaTestDir() + "junk"),
+                "Non-existent directory: Should raise IOException"
+        );
     }
 
     public void testInvalidDirectory() {
         final String file = getTestDir() + getPackageSubDir() + "ExampleTest.java";
-        try {
-            fileManager.addDirectory(file);
-            fail("Invalid directory: Should raise IOException");
-        } catch (final IOException expected) {
-            assertTrue(true);
-        }
+        assertThrows(
+                IOException.class,
+                () -> fileManager.addDirectory(file),
+                "Invalid directory: Should raise IOException"
+        );
     }
 
-    public void testClassFile() throws IOException {
+    public void testClassFile() {
         final File f = new File(getJavaMainDir() + getPackageSubDir() + "JDepend.class");
         assertTrue(new FileManager().acceptClassFile(f));
     }

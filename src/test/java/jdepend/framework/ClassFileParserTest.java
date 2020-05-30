@@ -2,8 +2,12 @@ package jdepend.framework;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author <b>Mike Clark</b>
@@ -13,36 +17,38 @@ public class ClassFileParserTest extends JDependTestCase {
 
     private ClassFileParser parser;
 
-    public ClassFileParserTest(String name) {
+    public ClassFileParserTest(final String name) {
         super(name);
+    }
+
+    private static void assertContains(final Collection<JavaPackage> imports, final String... expectedPackageName) {
+        assertAll(
+                Stream.of(expectedPackageName)
+                        .map(JavaPackage::new)
+                        .map(it -> () -> assertTrue(imports.contains(it)))
+        );
     }
 
     protected void setUp() {
         super.setUp();
-        PackageFilter filter = new PackageFilter(new ArrayList());
+        final var filter = new PackageFilter(List.of());
         parser = new ClassFileParser(filter);
     }
 
-    protected void tearDown() {
-        super.tearDown();
-    }
-
     public void testInvalidClassFile() {
-        File f = new File(getTestDir() + getPackageSubDir() + "ExampleTest.java");
+        final var f = new File(getTestDir() + getPackageSubDir() + "ExampleTest.java");
 
-        try {
-            parser.parse(f);
-            fail("Invalid class file: Should raise IOException");
-
-        } catch (IOException expected) {
-            assertTrue(true);
-        }
+        assertThrows(
+                IOException.class,
+                () -> parser.parse(f),
+                "Invalid class file: Should raise IOException"
+        );
     }
 
     public void testInterfaceClass() throws IOException {
-        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleInterface.class");
+        final var f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleInterface.class");
 
-        JavaClass clazz = parser.parse(f);
+        final var clazz = parser.parse(f);
 
         assertTrue(clazz.isAbstract());
 
@@ -50,21 +56,16 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertEquals("ExampleInterface.java", clazz.getSourceFile());
 
-        Collection imports = clazz.getImportedPackages();
+        final var imports = clazz.getImportedPackages();
         assertEquals(6, imports.size());
 
-        assertTrue(imports.contains(new JavaPackage("java.math")));
-        assertTrue(imports.contains(new JavaPackage("java.text")));
-        assertTrue(imports.contains(new JavaPackage("java.lang")));
-        assertTrue(imports.contains(new JavaPackage("java.io")));
-        assertTrue(imports.contains(new JavaPackage("java.rmi")));
-        assertTrue(imports.contains(new JavaPackage("java.util")));
+        assertContains(imports, "java.math", "java.text", "java.lang", "java.io", "java.rmi", "java.util");
     }
 
     public void testAbstractClass() throws IOException {
-        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleAbstractClass.class");
+        final var f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleAbstractClass.class");
 
-        JavaClass clazz = parser.parse(f);
+        final var clazz = parser.parse(f);
 
         assertTrue(clazz.isAbstract());
 
@@ -72,22 +73,24 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertEquals("ExampleAbstractClass.java", clazz.getSourceFile());
 
-        Collection imports = clazz.getImportedPackages();
+        final var imports = clazz.getImportedPackages();
         assertEquals(7, imports.size());
 
-        assertTrue(imports.contains(new JavaPackage("java.math")));
-        assertTrue(imports.contains(new JavaPackage("java.text")));
-        assertTrue(imports.contains(new JavaPackage("java.lang")));
-        assertTrue(imports.contains(new JavaPackage("java.lang.reflect")));
-        assertTrue(imports.contains(new JavaPackage("java.io")));
-        assertTrue(imports.contains(new JavaPackage("java.rmi")));
-        assertTrue(imports.contains(new JavaPackage("java.util")));
+        assertContains(imports,
+                "java.math",
+                "java.text",
+                "java.lang",
+                "java.lang.reflect",
+                "java.io",
+                "java.rmi",
+                "java.util"
+        );
     }
 
     public void testConcreteClass() throws IOException {
-        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleConcreteClass.class");
+        final var f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleConcreteClass.class");
 
-        JavaClass clazz = parser.parse(f);
+        final var clazz = parser.parse(f);
 
         assertFalse(clazz.isAbstract());
 
@@ -95,36 +98,40 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertEquals("ExampleConcreteClass.java", clazz.getSourceFile());
 
-        Collection imports = clazz.getImportedPackages();
+        final var imports = clazz.getImportedPackages();
         assertEquals(19, imports.size());
 
-        assertTrue(imports.contains(new JavaPackage("java.net")));
-        assertTrue(imports.contains(new JavaPackage("java.text")));
-        assertTrue(imports.contains(new JavaPackage("java.sql")));
-        assertTrue(imports.contains(new JavaPackage("java.lang")));
-        assertTrue(imports.contains(new JavaPackage("java.io")));
-        assertTrue(imports.contains(new JavaPackage("java.rmi")));
-        assertTrue(imports.contains(new JavaPackage("java.util")));
-        assertTrue(imports.contains(new JavaPackage("java.util.jar")));
-        assertTrue(imports.contains(new JavaPackage("java.math")));
+        assertContains(imports,
+                "java.net",
+                "java.text",
+                "java.sql",
+                "java.lang",
+                "java.io",
+                "java.rmi",
+                "java.util",
+                "java.util.jar",
+                "java.math"
+        );
 
         // annotations
-        assertTrue(imports.contains(new JavaPackage("org.junit.runners")));
-        assertTrue(imports.contains(new JavaPackage("java.applet")));
-        assertTrue(imports.contains(new JavaPackage("org.junit")));
-        assertTrue(imports.contains(new JavaPackage("javax.crypto")));
-        assertTrue(imports.contains(new JavaPackage("java.awt.geom")));
-        assertTrue(imports.contains(new JavaPackage("java.awt.image.renderable")));
-        assertTrue(imports.contains(new JavaPackage("jdepend.framework.p1")));
-        assertTrue(imports.contains(new JavaPackage("jdepend.framework.p2")));
-        assertTrue(imports.contains(new JavaPackage("java.awt.im")));
-        assertTrue(imports.contains(new JavaPackage("java.awt.dnd")));
+        assertContains(imports,
+                "org.junit.runners",
+                "java.applet",
+                "org.junit",
+                "javax.crypto",
+                "java.awt.geom",
+                "java.awt.image.renderable",
+                "jdepend.framework.p1",
+                "jdepend.framework.p2",
+                "java.awt.im",
+                "java.awt.dnd"
+        );
     }
 
     public void testInnerClass() throws IOException {
-        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleConcreteClass$ExampleInnerClass.class");
+        final var f = new File(getJavaTestDir() + getPackageSubDir() + "ExampleConcreteClass$ExampleInnerClass.class");
 
-        JavaClass clazz = parser.parse(f);
+        final var clazz = parser.parse(f);
 
         assertFalse(clazz.isAbstract());
 
@@ -133,17 +140,16 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertEquals("ExampleConcreteClass.java", clazz.getSourceFile());
 
-        Collection imports = clazz.getImportedPackages();
+        final var imports = clazz.getImportedPackages();
         assertEquals(1, imports.size());
 
-        assertTrue(imports.contains(new JavaPackage("java.lang")));
-
+        assertContains(imports, "java.lang");
     }
 
     public void testPackageClass() throws IOException {
-        File f = new File(getJavaTestDir() + getPackageSubDir() + "ExamplePackageClass.class");
+        final var f = new File(getJavaTestDir() + getPackageSubDir() + "ExamplePackageClass.class");
 
-        JavaClass clazz = parser.parse(f);
+        final var clazz = parser.parse(f);
 
         assertFalse(clazz.isAbstract());
 
@@ -151,11 +157,10 @@ public class ClassFileParserTest extends JDependTestCase {
 
         assertEquals("ExampleConcreteClass.java", clazz.getSourceFile());
 
-        Collection imports = clazz.getImportedPackages();
+        final var imports = clazz.getImportedPackages();
         assertEquals(1, imports.size());
 
-        assertTrue(imports.contains(new JavaPackage("java.lang")));
-
+        assertContains(imports, "java.lang");
     }
 
     public void testExampleClassFileFromTimDrury() throws IOException {
