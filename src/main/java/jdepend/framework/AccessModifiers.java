@@ -11,7 +11,7 @@ package jdepend.framework;
  * @see <a href="https://docs.oracle.com/javase/specs/jvms/se14/jvms14.pdf">The Java® Virtual Machine Specification,
  *      Table 4.7.6-A. Nested class access and property modifiers</a>
  */
-public class AccessModifiers {
+public final class AccessModifiers {
     public static final int ACC_PUBLIC = 0x0001;
     public static final int ACC_PRIVATE = 0x0002;
     public static final int ACC_PROTECTED = 0x0004;
@@ -35,4 +35,8 @@ public class AccessModifiers {
     public static final int ACC_ENUM = 0x4000;
     public static final int ACC_MODULE = 0x8000;
     public static final int ACC_MANDATED = 0x8000;
+
+    private AccessModifiers() {
+        // Utility Class
+    }
 }

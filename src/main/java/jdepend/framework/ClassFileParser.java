@@ -391,6 +391,7 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private void addAttributeAnnotationReferences() throws IOException {
+        // TODO Understand why the first one is skipped.
         for (int j = 1; j < attributes.length; j++) {
             if ("RuntimeVisibleAnnotations".equals(attributes[j].name)) {
                 addAnnotationReferences(attributes[j]);
@@ -399,6 +400,7 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private void addFieldAnnotationReferences() throws IOException {
+        // TODO Understand why the first one is skipped.
         for (int j = 1; j < fields.length; j++) {
             if (fields[j].runtimeVisibleAnnotations != null) {
                 addAnnotationReferences(fields[j].runtimeVisibleAnnotations);
@@ -407,6 +409,7 @@ public class ClassFileParser extends AbstractParser {
     }
 
     private void addMethodAnnotationReferences() throws IOException {
+        // TODO Understand why the first one is skipped.
         for (int j = 1; j < methods.length; j++) {
             if (methods[j].runtimeVisibleAnnotations != null) {
                 addAnnotationReferences(methods[j].runtimeVisibleAnnotations);
@@ -573,79 +576,6 @@ public class ClassFileParser extends AbstractParser {
         }
 
         return s.toString();
-    }
-
-    static class Constant {
-        private final byte tag;
-        private final int nameIndex;
-        private final int typeIndex;
-        private Object value;
-
-        Constant(final byte tag, final int nameIndex) {
-            this(tag, nameIndex, -1);
-        }
-
-        Constant(final byte tag, final Object value) {
-            this(tag, -1, -1);
-            this.value = value;
-        }
-
-        Constant(final byte tag, final int nameIndex, final int typeIndex) {
-            this.tag = tag;
-            this.nameIndex = nameIndex;
-            this.typeIndex = typeIndex;
-            value = null;
-        }
-
-        byte getTag() {
-            return tag;
-        }
-
-        int getNameIndex() {
-            return nameIndex;
-        }
-
-        int getTypeIndex() {
-            return typeIndex;
-        }
-
-        Object getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            final StringBuilder s = new StringBuilder();
-            s.append("tag: ").append(getTag());
-            if (getNameIndex() > -1) {
-                s.append(" nameIndex: ").append(getNameIndex());
-            }
-            if (getTypeIndex() > -1) {
-                s.append(" typeIndex: ").append(getTypeIndex());
-            }
-            if (getValue() != null) {
-                s.append(" value: ").append(getValue());
-            }
-            return s.toString();
-        }
-    }
-
-    static class AttributeInfo {
-        private final String name;
-        private final byte[] value;
-
-        AttributeInfo(final String name, final byte[] value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public byte[] getValue() {
-            return this.value;
-        }
     }
 
     class FieldOrMethodInfo {
