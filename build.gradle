@@ -2,11 +2,16 @@ plugins {
     id 'java'
     id 'checkstyle'
 //    id 'pmd'
+//    id 'name.remal.sonarlint' version '1.0.192'
+//    id 'org.sonarqube' version '3.0'
+    id 'jacoco'
+//    id 'info.solidsoft.pitest' version '1.5.1'
     id 'name.remal.check-updates' version '1.0.192'
 }
 
 group = 'com.nelkinda.tools'
 version = '0.0.1-SNAPSHOT'
+
 sourceCompatibility = '14'
 
 repositories {
@@ -17,6 +22,7 @@ ext {
     junitVersion = '4.13'
     junitJupiterVersion = '5.6.2'
     junitPlatformVersion = '1.6.2'
+//    pmdVersion = '6.24.0'
 }
 
 dependencies {
@@ -44,20 +50,52 @@ checkstyleTest {
     maxWarnings = 0
 }
 
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+//                minimum = 1.0
+                minimum = 0.4
+            }
+        }
+    }
+}
+check.dependsOn jacocoTestCoverageVerification
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled true
+        html.enabled true
+    }
+}
+test.finalizedBy jacocoTestReport
+
+//pitest {
+//    targetClasses = ['com.nelkinda.template.*'] // TODO change
+//    pitestVersion = '1.5.2'
+//    timestampedReports = false
+//    testPlugin = 'junit5'
+//    outputFormats = ['XML', 'HTML']
+//    mutators = ['DEFAULTS', 'STRONGER', 'CONSTRUCTOR_CALLS', 'INLINE_CONSTS', 'REMOVE_CONDITIONALS', 'REMOVE_INCREMENTS']
+//    mutationThreshold = 100
+//    coverageThreshold = 100
+//}
+
 //pmd {
 //    ruleSets = []
 //    consoleOutput = true
 //    dependencies {
-//        pmd 'net.sourceforge.pmd:pmd:6.21.0'
-//        pmd 'net.sourceforge.pmd:pmd-core:6.21.0'
-//        pmd 'net.sourceforge.pmd:pmd-java:6.21.0'
+//        pmd "net.sourceforge.pmd:pmd:$rootProject.ext.pmdVersion"
+//        pmd "net.sourceforge.pmd:pmd-core:$rootProject.ext.pmdVersion"
+//        pmd "net.sourceforge.pmd:pmd-java:$rootProject.ext.pmdVersion"
 //    }
 //}
-//
+
 //pmdMain {
 //    ruleSetFiles = files("config/pmd/pmdMain.xml")
 //}
-//
+
 //pmdTest {
 //    ruleSetFiles = files("config/pmd/pmdTest.xml")
 //}
