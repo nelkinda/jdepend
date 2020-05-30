@@ -45,10 +45,7 @@ public class FileManager {
     }
 
     public boolean acceptClassFile(final File file) {
-        if (!file.isFile()) {
-            return false;
-        }
-        return acceptClassFileName(file.getName());
+        return file.isFile() && acceptClassFileName(file.getName());
     }
 
     public boolean acceptClassFileName(final String name) {
