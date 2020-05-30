@@ -7,7 +7,6 @@ import java.text.NumberFormat;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class MetricTest extends JDependTestCase {
 
     private JDepend jdepend;

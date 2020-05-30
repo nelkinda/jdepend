@@ -8,7 +8,6 @@ import java.util.List;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class CycleTest extends JDependTestCase {
 
     public CycleTest(String name) {

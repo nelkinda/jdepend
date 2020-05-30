@@ -16,7 +16,6 @@ import jdepend.framework.PackageFilter;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class JDepend {
 
     private jdepend.framework.JDepend analyzer;

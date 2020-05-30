@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class StatusPanel extends JPanel {
 
     /**

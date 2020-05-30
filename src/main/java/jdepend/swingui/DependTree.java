@@ -14,7 +14,6 @@ import jdepend.framework.JavaPackage;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class DependTree extends JPanel implements TreeSelectionListener {
 
     private final JTree tree = createTree(this);
@@ -106,4 +105,3 @@ public class DependTree extends JPanel implements TreeSelectionListener {
         return tree;
     }
 }
-

@@ -11,7 +11,6 @@ import java.util.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class FileManager {
     private final List<File> directories;
     private boolean acceptInnerClasses;

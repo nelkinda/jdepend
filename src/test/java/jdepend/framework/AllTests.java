@@ -7,7 +7,6 @@ import junit.framework.TestSuite;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class AllTests {
 
     public static Test suite() {

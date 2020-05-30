@@ -12,7 +12,6 @@ import java.util.zip.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class JavaClassBuilder {
     private final AbstractParser parser;
     private final FileManager fileManager;

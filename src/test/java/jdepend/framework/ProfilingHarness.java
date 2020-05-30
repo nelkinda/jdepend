@@ -3,7 +3,6 @@ package jdepend.framework;
 import static java.lang.String.format;
 
 public class ProfilingHarness {
-
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis();
         for (int i = 0; i < 10; i++) {
@@ -16,5 +15,4 @@ public class ProfilingHarness {
         long end = System.currentTimeMillis();
         System.out.println(format("done: %sms", (end - start)));
     }
-
 }

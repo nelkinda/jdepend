@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class ComponentTest extends JDependTestCase {
 
     private static final NumberFormat formatter;

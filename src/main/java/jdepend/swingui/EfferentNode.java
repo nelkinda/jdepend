@@ -11,7 +11,6 @@ import jdepend.framework.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class EfferentNode extends PackageNode {
 
     /**
@@ -79,4 +78,3 @@ public class EfferentNode extends PackageNode {
         return super.toString();
     }
 }
-

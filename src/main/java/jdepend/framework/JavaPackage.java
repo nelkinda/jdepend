@@ -8,7 +8,6 @@ import java.util.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class JavaPackage {
     public static final Comparator<JavaPackage> byName = Comparator.comparing(JavaPackage::getName);
     private final String name;

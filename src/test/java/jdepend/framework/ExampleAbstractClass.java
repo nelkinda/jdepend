@@ -6,7 +6,6 @@ import java.math.BigDecimal;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public abstract class ExampleAbstractClass implements ExampleInterface, java.io.Serializable {
 
     private java.lang.reflect.Method method;

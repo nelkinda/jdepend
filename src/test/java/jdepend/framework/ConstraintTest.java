@@ -6,7 +6,6 @@ import java.io.IOException;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class ConstraintTest extends JDependTestCase {
 
     private JDepend jdepend;

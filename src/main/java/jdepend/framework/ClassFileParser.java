@@ -13,7 +13,6 @@ import static jdepend.framework.ConstantPoolTags.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class ClassFileParser extends AbstractParser {
 
     public static final int JAVA_MAGIC = 0xCAFEBABE;

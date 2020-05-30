@@ -9,7 +9,6 @@ import java.util.Collection;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class FilterTest extends JDependTestCase {
 
     public FilterTest(String name) {

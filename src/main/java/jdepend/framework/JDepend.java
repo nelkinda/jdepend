@@ -99,7 +99,6 @@ import java.util.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class JDepend {
     private final Map<String, JavaPackage> packages = new HashMap<>();
     private final FileManager fileManager = new FileManager();

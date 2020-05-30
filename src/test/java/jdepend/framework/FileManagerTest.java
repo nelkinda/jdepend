@@ -7,7 +7,6 @@ import java.io.IOException;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class FileManagerTest extends JDependTestCase {
 
     private FileManager fileManager;

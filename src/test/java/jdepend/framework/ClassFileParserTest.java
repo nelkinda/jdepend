@@ -9,7 +9,6 @@ import java.util.Collection;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class ClassFileParserTest extends JDependTestCase {
 
     private ClassFileParser parser;
@@ -168,4 +167,3 @@ public class ClassFileParserTest extends JDependTestCase {
         parser.parse(ClassFileParser.class.getClassLoader().getResourceAsStream("example_class2.bin"));
     }
 }
-

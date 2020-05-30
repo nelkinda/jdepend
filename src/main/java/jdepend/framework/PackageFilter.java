@@ -14,7 +14,6 @@ import java.util.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class PackageFilter {
 
     private final Collection<String> filtered;

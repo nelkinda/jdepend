@@ -14,7 +14,6 @@ import java.util.List;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public abstract class PackageNode {
     private static final NumberFormat formatter;
 
@@ -166,4 +165,3 @@ public abstract class PackageNode {
         return getPackage().getName();
     }
 }
-

@@ -9,7 +9,6 @@ import java.math.BigDecimal;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 @org.junit.runners.Suite.SuiteClasses(java.applet.AppletStub.class)
 public class ExampleConcreteClass extends ExampleAbstractClass {
 

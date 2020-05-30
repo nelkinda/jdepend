@@ -14,7 +14,6 @@ import static java.util.Comparator.comparing;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class JavaClass {
     public static final Comparator<JavaClass> byName = comparing(JavaClass::getClassName);
 

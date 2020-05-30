@@ -33,7 +33,6 @@ import static javax.swing.UIManager.setLookAndFeel;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class JDepend implements ParserListener {
     private static final Font BOLD_FONT = new Font("dialog", Font.BOLD, 12);
     private static final Map<String, String> resourceStrings = Map.of(

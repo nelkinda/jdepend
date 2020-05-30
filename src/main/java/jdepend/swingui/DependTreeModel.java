@@ -11,7 +11,6 @@ import javax.swing.event.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class DependTreeModel implements TreeModel {
 
     private final List<TreeModelListener> listeners = new ArrayList<>();
@@ -136,4 +135,3 @@ public class DependTreeModel implements TreeModel {
         listeners.remove(l);
     }
 }
-

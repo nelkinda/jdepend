@@ -7,7 +7,6 @@ import java.util.List;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class CollectAllCyclesTest extends JDependTestCase {
 
     public CollectAllCyclesTest(final String name) {

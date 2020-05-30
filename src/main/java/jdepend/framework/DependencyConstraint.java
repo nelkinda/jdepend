@@ -40,7 +40,6 @@ import java.util.*;
  * @author <b>Mike Clark</b> 
  * @author Clarkware Consulting, Inc.
  */
-
 public class DependencyConstraint {
 
     private final Map<String, JavaPackage> packages;

@@ -16,7 +16,6 @@ import jdepend.framework.JavaPackage;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class JDepend extends jdepend.textui.JDepend {
 
     /**

@@ -19,7 +19,6 @@ import java.util.StringTokenizer;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public class PropertyConfigurator {
 
     private final Properties properties;

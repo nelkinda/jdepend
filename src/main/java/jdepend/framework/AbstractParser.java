@@ -11,7 +11,6 @@ import java.util.*;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public abstract class AbstractParser {
 
     private final List<ParserListener> parserListeners = new ArrayList<>();

@@ -10,7 +10,6 @@ package jdepend.framework;
  * @author <b>Mike Clark</b>
  * @author Clarkware Consulting, Inc.
  */
-
 public interface ParserListener {
     /**
      * Called whenever a Java class file is parsed into the specified
